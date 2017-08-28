@@ -17,6 +17,7 @@ ALTER TABLE IF EXISTS ONLY public.tag DROP CONSTRAINT IF EXISTS pk_tag_id CASCAD
 ALTER TABLE IF EXISTS ONLY public.question_tag DROP CONSTRAINT IF EXISTS fk_tag_id CASCADE;
 
 DROP TABLE IF EXISTS public.question;
+DROP SEQUENCE IF EXISTS public.question_id_seq;
 CREATE TABLE question (
     id serial NOT NULL,
     submission_time timestamp without time zone,
@@ -28,6 +29,7 @@ CREATE TABLE question (
 );
 
 DROP TABLE IF EXISTS public.answer;
+DROP SEQUENCE IF EXISTS public.answer_id_seq;
 CREATE TABLE answer (
     id serial NOT NULL,
     submission_time timestamp without time zone,
@@ -38,6 +40,7 @@ CREATE TABLE answer (
 );
 
 DROP TABLE IF EXISTS public.comment;
+DROP SEQUENCE IF EXISTS public.comment_id_seq;
 CREATE TABLE comment (
     id serial NOT NULL,
     question_id integer,
@@ -55,6 +58,10 @@ CREATE TABLE question_tag (
 );
 
 DROP TABLE IF EXISTS public.tag;
+<<<<<<< HEAD
+=======
+DROP SEQUENCE IF EXISTS public.tag_id_seq;
+>>>>>>> add sql sample data
 CREATE TABLE tag (
     id serial NOT NULL,
     name text
@@ -77,6 +84,7 @@ ALTER TABLE ONLY tag
     ADD CONSTRAINT pk_tag_id PRIMARY KEY (id);
 
 ALTER TABLE ONLY comment
+<<<<<<< HEAD
     ADD CONSTRAINT fk_answer_id FOREIGN KEY (answer_id) REFERENCES answer(id) on delete cascade;
 
 ALTER TABLE ONLY answer
@@ -90,6 +98,21 @@ ALTER TABLE ONLY comment
 
 ALTER TABLE ONLY question_tag
     ADD CONSTRAINT fk_tag_id FOREIGN KEY (tag_id) REFERENCES tag(id) on delete cascade;
+=======
+    ADD CONSTRAINT fk_answer_id FOREIGN KEY (answer_id) REFERENCES answer(id);
+
+ALTER TABLE ONLY answer
+    ADD CONSTRAINT fk_question_id FOREIGN KEY (question_id) REFERENCES question(id);
+
+ALTER TABLE ONLY question_tag
+    ADD CONSTRAINT fk_question_id FOREIGN KEY (question_id) REFERENCES question(id);
+
+ALTER TABLE ONLY comment
+    ADD CONSTRAINT fk_question_id FOREIGN KEY (question_id) REFERENCES question(id);
+
+ALTER TABLE ONLY question_tag
+    ADD CONSTRAINT fk_tag_id FOREIGN KEY (tag_id) REFERENCES tag(id);
+>>>>>>> add sql sample data
 
 INSERT INTO question VALUES (0, '2017-04-28 08:29:00', 29, 7, 'How to make lists in Python?', 'I am totally new to this, any hints?', NULL);
 INSERT INTO question VALUES (1, '2017-04-29 09:19:00', 15, 9, 'Wordpress loading multiple jQuery Versions', 'I developed a plugin that uses the jquery booklet plugin (http://builtbywill.com/booklet/#/) this plugin binds a function to $ so I cann call $(".myBook").booklet();
