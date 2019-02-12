@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Index</title>
+</head>
+<body>
+<h1>ASK MATE</h1>
+<h2>QUESTIONS:</h2>
+<table>
+    <tbody>
+    {% for question in questions[1:]%}
+    <tr>
+        <td>{{question['title']}}</td>
+        {% endfor %}
+    </tr>
+    </tbody>
+
+</table>
+
+
+</body>
+</html>
