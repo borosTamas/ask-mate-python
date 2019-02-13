@@ -5,8 +5,8 @@ import time
 ANSWERS_HEADER = ['id','submission_time','vote_number','question_id','message','image']
 DATA_HEADER = ['id', 'submission_time', 'view_number', 'vote_number', 'title', 'message', 'image']
 QUESTIONS = DATA_FILE_PATH = os.getenv(
-    'DATA_FILE_PATH') if 'DATA_FILE_PATH' in os.environ else '/home/levente/Desktop/web/ask mate/ask-mate-python/sample_data/question.csv'
-ANSWERS = DATA_FILE_PATH = os.getenv('DATA_FILE_PATH') if 'DATA_FILE_PATH' in os.environ else '/home/levente/Desktop/web/ask mate/ask-mate-python/sample_data/answer.csv'
+    'DATA_FILE_PATH') if 'DATA_FILE_PATH' in os.environ else 'sample_data/question.csv'
+ANSWERS = DATA_FILE_PATH = os.getenv('DATA_FILE_PATH') if 'DATA_FILE_PATH' in os.environ else 'sample_data/answer.csv'
 
 
 def collect_questions():
@@ -24,7 +24,7 @@ def find_question(id):
             result = question
             return result
 
-def collect_answers():
+def collect_answers(id):
     with open(ANSWERS, 'r') as answers:
         result = []
         answers_dict = csv.DictReader(answers, fieldnames=ANSWERS_HEADER)
@@ -34,6 +34,23 @@ def collect_answers():
             else:
                 result = [{'message':'There is no answers yet.'}]
         return result
+
+def update_question(question_dict):
+    with open(QUESTIONS,'r') as old_questions:
+        old_question_dict = csv.DictReader(old_questions, fieldnames=DATA_HEADER)
+        temporary_list=[]
+        for row in old_question_dict:
+            if row[id] == question_dict[id]:
+                row = question_dict
+                temporary_list.append(row)
+            else:
+                temporary_list.append(row)
+
+    with open(QUESTIONS,'w') as new_qestions:
+        new_qestion_dict = csv.DictWriter(new_qestions, fieldnames= DATA_HEADER)
+        new_qestion_dict.writeheader()
+        for row in temporary_list[1:]:
+            new_qestion_dict.writerow(row)
 
 
 def add_answer(form_data):
