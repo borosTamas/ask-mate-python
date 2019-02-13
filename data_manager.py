@@ -20,6 +20,7 @@ def find_question(id):
     for question in list_of_questions:
         if question['id'] == id:
             result = question
+            print(result["title"])
             return result
 
 def collect_answers():
