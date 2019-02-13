@@ -11,7 +11,8 @@ def render_index():
 @app.route('/question_page/<id>')
 def show_question(id):
     question = data_manager.find_question(id)
-    return render_template('question_page.html', question=question)
+    answers = data_manager.collect_answers(id)
+    return render_template('question_page.html', question=question, answers=answers)
 
 
 @app.route('/add-question',methods=['GET','POST'])

@@ -1,7 +1,7 @@
 import csv
 import os
 
-ANSWERS_HEADER = ['id','submission_time','vote_number','question_id','message,image']
+ANSWERS_HEADER = ['id','submission_time','vote_number','question_id','message','image']
 DATA_HEADER = ['id', 'submission_time', 'view_number', 'vote_number', 'title', 'message', 'image']
 QUESTIONS = DATA_FILE_PATH = os.getenv(
     'DATA_FILE_PATH') if 'DATA_FILE_PATH' in os.environ else 'sample_data/question.csv'
@@ -23,10 +23,13 @@ def find_question(id):
             result = question
             return result
 
-def collect_answers():
+def collect_answers(id):
     with open(ANSWERS, 'r') as answers:
         result = []
         answers_dict = csv.DictReader(answers, fieldnames=ANSWERS_HEADER)
         for answers in answers_dict:
-            result.append(answers)
+            if answers['question_id'] == id:
+                result.append(answers)
+            else:
+                result = [{'message':'There is no answers yet.'}]
         return result
