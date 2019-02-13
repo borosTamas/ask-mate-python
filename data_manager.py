@@ -17,22 +17,22 @@ def collect_questions():
             result.append(question)
         return result
 
-
 def find_question(id):
     list_of_questions = collect_questions()
     for question in list_of_questions:
         if question['id'] == id:
             result = question
-            print(result["title"])
             return result
-
 
 def collect_answers():
     with open(ANSWERS, 'r') as answers:
         result = []
         answers_dict = csv.DictReader(answers, fieldnames=ANSWERS_HEADER)
         for answers in answers_dict:
-            result.append(answers)
+            if answers['question_id'] == id:
+                result.append(answers)
+            else:
+                result = [{'message':'There is no answers yet.'}]
         return result
 
 
