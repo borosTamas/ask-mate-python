@@ -15,9 +15,12 @@ def collect_questions():
             result.append(question)
         return result
 
-def find_question(id,list_of_questions):
+def find_question(id):
+    list_of_questions = collect_questions()
     for question in list_of_questions:
-        pass
+        if question['id'] == id:
+            result = question
+            return result
 
 def collect_answers():
     pass
