@@ -2,9 +2,31 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title> #question_title</title>
+    <title> {{question['title']}}</title>
 </head>
 <body>
-
+<table>
+    <thead>
+    <th>ID</th>
+    <th>Submission Time</th>
+    <th>view_number</th>
+    <th>vote_number</th>
+    <th>title</th>
+    <th>message</th>
+    <th>image
+    </thead>
+    </thead>
+    <tbody>
+    <tr>
+        <td>{{question['id']}}</td>
+        <td>{{question['submission_time']}}</td>
+        <td>{{question['view_number']}}</td>
+        <td>{{question['vote_number']}}</td>
+        <td>{{question['title']}}</td>
+        <td>{{question['message']}}</td>
+        <td>{{question['image']}}</td>
+    </tr>
+    </tbody>
+</table>
 </body>
 </html>
