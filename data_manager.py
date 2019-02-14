@@ -37,7 +37,7 @@ def collect_answers():
         return result
 
 def update_question(question_dict):
-    with open(QUESTIONS,'r') as old_questions:
+    with open(QUESTIONS_FILE_PATH,'r') as old_questions:
         old_question_dict = csv.DictReader(old_questions, fieldnames=DATA_HEADER)
         temporary_list=[]
         for row in old_question_dict:
@@ -47,7 +47,7 @@ def update_question(question_dict):
             else:
                 temporary_list.append(row)
 
-    with open(QUESTIONS,'w') as new_qestions:
+    with open(QUESTIONS_FILE_PATH,'w') as new_qestions:
         new_qestion_dict = csv.DictWriter(new_qestions, fieldnames= DATA_HEADER)
         new_qestion_dict.writeheader()
         for row in temporary_list[1:]:
@@ -62,9 +62,11 @@ def add_answer(form_data):
         new_id = int(new_id) + 1
     submission_time = int(time.time())
     prepared_data = [item for key, item in form_data.items()]
-    prepared_data = list(str(new_id) + str(submission_time) + str('')) + prepared_data
+    prepared_data = list(str(new_id)+str(submission_time)+str(''))+prepared_data
     with open(ANSWERS_FILE_PATH, 'a', newline='') as csv_file:
         writer = csv.writer(csv_file)
+        writer.writerow(prepared_data)
+
 
 
 def csv_questionwriter(csv_file,dictvalue1,dictvalue2):
