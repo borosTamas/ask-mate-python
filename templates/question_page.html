@@ -9,12 +9,12 @@
 ID :{{question['id']}}<br>
 Submission Time: {{question['submission_time']}}<br>
 View Number: {{question['view_number']}}<br>
-Vote Number: <form{{question['vote_number']}}<br>
+Vote Number: {{question['vote_number']}}<br>
 Title: {{question['title']}}<br>
 Message:{{question['message']}}<br>
 Image:{{question['image']}}<br>
 
-<a href="edit_question">edit question</a>
+<a href="{{url_for('edit_question', id=question['id'])}}">edit question</a>
 
 
 <h2>Answers:</h2>
