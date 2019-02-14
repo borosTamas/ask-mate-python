@@ -1,6 +1,7 @@
 import csv
 import os
 import time
+from datetime import datetime
 
 ANSWERS_HEADER = ['id', 'submission_time', 'vote_number', 'question_id', 'message', 'image']
 DATA_HEADER = ['id', 'submission_time', 'view_number', 'vote_number', 'title', 'message', 'image']
@@ -26,32 +27,31 @@ def find_question(id):
             return result
 
 
-def collect_answers():
+def collect_answers(id):
     with open(ANSWERS_FILE_PATH, 'r') as answers:
         result = []
         answers_dict = csv.DictReader(answers, fieldnames=ANSWERS_HEADER)
         for answers in answers_dict:
             if answers['question_id'] == id:
                 result.append(answers)
-            else:
-                result = [{'message': 'There is no answers yet.'}]
+        if len(result) < 1:
+            result = [{'message': 'there is no answer yet'}]
         return result
 
 
 def update_question(question_dict):
-    with open(QUESTIONS_FILE_PATH,'r') as old_questions:
-    with open(QUESTIONS, 'r') as old_questions:
+    with open(QUESTIONS_FILE_PATH, 'r') as old_questions:
         old_question_dict = csv.DictReader(old_questions, fieldnames=DATA_HEADER)
         temporary_list = []
         for row in old_question_dict:
-            if row[id] == question_dict[id]:
+            if row['id'] == question_dict['id']:
                 row = question_dict
                 temporary_list.append(row)
             else:
                 temporary_list.append(row)
 
-    with open(QUESTIONS_FILE_PATH,'w') as new_qestions:
-        new_qestion_dict = csv.DictWriter(new_qestions, fieldnames= DATA_HEADER)
+    with open(QUESTIONS_FILE_PATH, 'w') as new_qestions:
+        new_qestion_dict = csv.DictWriter(new_qestions, fieldnames=DATA_HEADER)
         new_qestion_dict.writeheader()
         for row in temporary_list[1:]:
             new_qestion_dict.writerow(row)
@@ -65,16 +65,26 @@ def add_answer(form_data):
         new_id = int(new_id) + 1
     submission_time = int(time.time())
     prepared_data = [item for key, item in form_data.items()]
-    prepared_data = list(str(new_id)+str(submission_time)+str(''))+prepared_data
+    prepared_data = list(str(new_id) + str(submission_time) + str('')) + prepared_data
     with open(ANSWERS_FILE_PATH, 'a', newline='') as csv_file:
         writer = csv.writer(csv_file)
         writer.writerow(prepared_data)
 
 
+def new_id(file_name):
+    with open(file_name, 'r') as file:
+        file_read = csv.DictReader(file, fieldnames=DATA_HEADER)
+        for row in file_read:
+            new_id = row['id']
+        return int(new_id)+1
 
-def csv_questionwriter(csv_file,dictvalue1,dictvalue2):
+
+def csv_questionwriter(csv_file, dictvalue1, dictvalue2):
     with open(csv_file, 'a', newline='') as csvfile:
-        fieldnames = ['question_name', 'question']
-        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
-        writer.writeheader()
-        writer.writerow({'question_name' : dictvalue1, 'question' : dictvalue2})
+        writer = csv.DictWriter(csvfile, fieldnames=DATA_HEADER)
+        question_id = new_id(csv_file)
+        view_counter = 0
+        vote_counter = 0
+        submission_time = int(time.time())
+        writer.writerow({'id': question_id, 'submission_time': submission_time, 'view_number': view_counter,
+                         'vote_number': vote_counter, 'title': dictvalue1, 'message': dictvalue2})

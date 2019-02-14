@@ -13,8 +13,27 @@ def render_index():
 @app.route('/question_page/<id>')
 def show_question(id):
     question = data_manager.find_question(id)
-    answers = data_manager.collect_answers()
+    answers = data_manager.collect_answers(id)
     return render_template('question_page.html', question=question, answers=answers)
+
+@app.route('/question_page/<id>/edit')
+def edit_question(id):
+    result = data_manager.find_question(id)
+    return render_template('add_question.html', result=result)
+
+@app.route('/rewrite_question', methods=['POST'])
+def rewrite_suestion():
+    updated_question = {
+        'id': request.form.get('id'),
+        'submission_time': request.form.get('submission_time'),
+        'view_number': request.form.get('view_number'),
+        'vote_number': request.form.get('vote_number'),
+        'title': request.form.get('title'),
+        'message': request.form.get('message'),
+        'image': request.form.get('image')
+    }
+    data_manager.update_question(updated_question)
+    return redirect('/')
 
 
 @app.route('/question_page/<id>/new-answer', methods=['GET','POST'])
@@ -32,11 +51,14 @@ def post_an_answer(id):
 
 @app.route('/add-question',methods=['GET','POST'])
 def route_index():
+    result = []
     if request.method == 'POST':
+
         question_name = request.form.get('question_name')
         question = request.form.get('question')
-        data_manager.csv_questionwriter('sample_data/new_questions.csv',question_name,question)
-    return render_template('add_question.html')
+        data_manager.csv_questionwriter('sample_data/question.csv',question_name,question)
+        return redirect('/')
+    return render_template('add_question.html', result=result)
 
 
 if __name__=="__main__":
