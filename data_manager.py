@@ -27,6 +27,14 @@ def find_question(id):
             return result
 
 
+def update_view_number(question):
+    view = question['view_number']
+    view = int(view)+1
+    question['view_number'] = view
+    update_question(question)
+
+
+
 def collect_answers(id):
     with open(ANSWERS_FILE_PATH, 'r') as answers:
         result = []
@@ -91,7 +99,7 @@ def new_id(file_name):
         file_read = csv.DictReader(file, fieldnames=DATA_HEADER)
         for row in file_read:
             new_id = row['id']
-        return int(new_id)+1
+        return int(new_id) + 1
 
 
 def csv_questionwriter(csv_file, dictvalue1, dictvalue2):

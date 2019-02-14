@@ -12,6 +12,7 @@ def render_index():
 def show_question(id):
     question = data_manager.find_question(id)
     answers = data_manager.collect_answers(id)
+    data_manager.update_view_number(question)
     return render_template('question_page.html', question=question, answers=answers)
 
 @app.route('/question_page/<id>/edit')
@@ -63,10 +64,6 @@ def route_index():
     return render_template('add_question.html', result=result)
 
 
-@app.route('/question_page/<id>/edit_question')
-def edit_question(id):
-    question = data_manager.find_question(id)
-    return render_template('edit_question.html', question=question)
 
 
 if __name__=="__main__":
