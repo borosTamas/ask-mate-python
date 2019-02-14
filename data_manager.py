@@ -17,7 +17,6 @@ def collect_questions():
             result.append(question)
         return result
 
-
 def find_question(id):
     list_of_questions = collect_questions()
     for question in list_of_questions:
@@ -37,6 +36,23 @@ def collect_answers():
                 result = [{'message': 'There is no answers yet.'}]
         return result
 
+def update_question(question_dict):
+    with open(QUESTIONS,'r') as old_questions:
+        old_question_dict = csv.DictReader(old_questions, fieldnames=DATA_HEADER)
+        temporary_list=[]
+        for row in old_question_dict:
+            if row[id] == question_dict[id]:
+                row = question_dict
+                temporary_list.append(row)
+            else:
+                temporary_list.append(row)
+
+    with open(QUESTIONS,'w') as new_qestions:
+        new_qestion_dict = csv.DictWriter(new_qestions, fieldnames= DATA_HEADER)
+        new_qestion_dict.writeheader()
+        for row in temporary_list[1:]:
+            new_qestion_dict.writerow(row)
+
 
 def add_answer(form_data):
     new_id = collect_answers()[-1]['id']
@@ -49,4 +65,11 @@ def add_answer(form_data):
     prepared_data = list(str(new_id) + str(submission_time) + str('')) + prepared_data
     with open(ANSWERS_FILE_PATH, 'a', newline='') as csv_file:
         writer = csv.writer(csv_file)
-        writer.writerow(prepared_data)
+
+
+def csv_questionwriter(csv_file,dictvalue1,dictvalue2):
+    with open(csv_file, 'a', newline='') as csvfile:
+        fieldnames = ['question_name', 'question']
+        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+        writer.writeheader()
+        writer.writerow({'question_name' : dictvalue1, 'question' : dictvalue2})

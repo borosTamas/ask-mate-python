@@ -33,10 +33,9 @@ def post_an_answer(id):
 @app.route('/add-question',methods=['GET','POST'])
 def route_index():
     if request.method == 'POST':
-        result = request.form.get('question')
-        result2 = request.form.get('question_name')
-        print(result)
-        print(result2)
+        question_name = request.form.get('question_name')
+        question = request.form.get('question')
+        data_manager.csv_questionwriter('sample_data/new_questions.csv',question_name,question)
     return render_template('add_question.html')
 
 
