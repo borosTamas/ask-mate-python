@@ -17,6 +17,7 @@ def collect_questions():
             result.append(question)
         return result
 
+
 def find_question(id):
     list_of_questions = collect_questions()
     for question in list_of_questions:
@@ -36,10 +37,12 @@ def collect_answers():
                 result = [{'message': 'There is no answers yet.'}]
         return result
 
+
 def update_question(question_dict):
     with open(QUESTIONS_FILE_PATH,'r') as old_questions:
+    with open(QUESTIONS, 'r') as old_questions:
         old_question_dict = csv.DictReader(old_questions, fieldnames=DATA_HEADER)
-        temporary_list=[]
+        temporary_list = []
         for row in old_question_dict:
             if row[id] == question_dict[id]:
                 row = question_dict
