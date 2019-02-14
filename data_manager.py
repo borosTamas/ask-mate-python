@@ -64,4 +64,11 @@ def add_answer(form_data):
     prepared_data = list(str(new_id)+str(submission_time)+str(''))+prepared_data
     with open(ANSWERS, 'a', newline='') as csv_file:
         writer = csv.writer(csv_file)
-        writer.writerow(prepared_data)
+
+
+def csv_questionwriter(csv_file,dictvalue1,dictvalue2):
+    with open(csv_file, 'a', newline='') as csvfile:
+        fieldnames = ['question_name', 'question']
+        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+        writer.writeheader()
+        writer.writerow({'question_name' : dictvalue1, 'question' : dictvalue2})
