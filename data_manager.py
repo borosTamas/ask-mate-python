@@ -25,7 +25,7 @@ def find_question(id):
             return result
 
 
-def collect_answers():
+def collect_answers(id):
     with open(ANSWERS_FILE_PATH, 'r') as answers:
         result = []
         answers_dict = csv.DictReader(answers, fieldnames=ANSWERS_HEADER)
@@ -54,18 +54,33 @@ def update_question(question_dict):
             new_qestion_dict.writerow(row)
 
 
-def add_answer(form_data):
-    new_id = collect_answers()[-1]['id']
+def collect_all_answer():
+    with open(ANSWERS_FILE_PATH, 'r') as all_answer:
+        result = []
+        all_answer_dict = csv.DictReader(all_answer, fieldnames=ANSWERS_HEADER)
+        for answer in all_answer_dict:
+            result.append(answer)
+        return result
+
+
+def id_generator():
+    new_id = collect_all_answer()[-1]['id']
     if new_id == 'id':
         new_id = 1
     else:
         new_id = int(new_id) + 1
+    return new_id
+
+
+def submission_time_generator():
     submission_time = int(time.time())
-    prepared_data = [item for key, item in form_data.items()]
-    prepared_data = list(str(new_id)+str(submission_time)+str(''))+prepared_data
+    return submission_time
+
+
+def add_answer(form_data):
     with open(ANSWERS_FILE_PATH, 'a', newline='') as csv_file:
-        writer = csv.writer(csv_file)
-        writer.writerow(prepared_data)
+        writer = csv.DictWriter(csv_file, fieldnames=ANSWERS_HEADER)
+        writer.writerow(form_data)
 
 
 

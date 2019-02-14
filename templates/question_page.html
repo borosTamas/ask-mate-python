@@ -21,8 +21,8 @@ Image:{{question['image']}}<br>
 {%for answer in answers%}
     {{answer['message']}}<br>
 {%endfor%}
-
-<a href='/question_page/<id>/new-answer', class="button">Post an Answer</a>
-
+<form action="/question_page/<id>/new-answer" method="post">
+    <a href="{{url_for('post_an_answer',id=question['id'], class="button")}}">Post an Answer</a>
+</form>
 </body>
 </html>
