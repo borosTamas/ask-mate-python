@@ -6,14 +6,17 @@
 </head>
 <body>
 <h1>Post an Answer</h1>
-<form action="/question_page/<id>/new-answer", method="post">
-<td>Question ID</td><br>
-<input type="text" name="question" id="question" value="{{question['id']}}"><br>
-<td>Message</td><br>
-<textarea name="message" id="message" aria-multiline="true"></textarea><br>
-<td>Image</td><br>
-<input type="text" name="image" id="image"><br>
-<button type="submit">Save</button>
+<form action="/question_page/{{ question['id'] }}/new-answer" method="post">
+    <td>Question ID</td>
+    <br>
+    <input type="text" name="question" id="question" value="{{ question['id'] }}"><br>
+    <td>Message</td>
+    <br>
+    <textarea name="message" id="message" aria-multiline="true"></textarea><br>
+    <td>Image</td>
+    <br>
+    <input type="text" name="image" id="image"><br>
+    <button type="submit">Save</button>
 </form>
 </body>
 </html>
