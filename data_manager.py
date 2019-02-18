@@ -33,6 +33,16 @@ def update_view_number(question):
     update_question(question)
 
 
+def update_vote_number(question,vote):
+    vote_number = question['vote_number']
+    if vote == 'up':
+        vote_number = int(vote_number) + 1
+    elif vote == 'down':
+        vote_number = int(vote_number) - 1
+    question['view_number'] = vote_number
+    update_question(question)
+
+
 
 def collect_answers(id):
     with open(ANSWERS_FILE_PATH, 'r') as answers:

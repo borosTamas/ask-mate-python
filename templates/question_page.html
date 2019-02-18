@@ -10,6 +10,8 @@ ID :{{question['id']}}<br>
 Submission Time: {{question['submission_time']}}<br>
 View Number: {{question['view_number']}}<br>
 Vote Number: {{question['vote_number']}}<br>
+<form action="/question_page/<id>/vote" method="post" name="up">Vote up</form>
+<form action="/question_page/<id>/vote" method="post" name="down">Vote down</form>
 Title: {{question['title']}}<br>
 Message:{{question['message']}}<br>
 Image:{{question['image']}}<br>
@@ -22,8 +24,8 @@ Image:{{question['image']}}<br>
     {{answer['message']}}
     <br>
 {%endfor%}
-<form action="/question_page/{{ question['id'] }}/new-answer" method="post">
-    <a href="{{url_for('post_an_answer',id=['question_id'], class="button")}}">Post an Answer</a>
+<form action="/question_page/{{ question['id'] }}/new-answer" method="POST">
+    <a href="{{url_for('post_an_answer',question_id=question['id'], class="button")}}">Post an Answer</a>
 </form>
 </body>
 </html>

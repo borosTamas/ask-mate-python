@@ -21,7 +21,7 @@ def edit_question(id):
     return render_template('add_question.html', result=result)
 
 @app.route('/rewrite_question', methods=['POST'])
-def rewrite_suestion():
+def rewrite_question():
     updated_question = {
         'id': request.form.get('id'),
         'submission_time': request.form.get('submission_time'),
@@ -35,18 +35,14 @@ def rewrite_suestion():
     return redirect('/')
 
 
-#@app.route('/question_page/<question_id>/new-answer', methods=['GET'])
-#def post_an_answer(question_id):
-#    question = data_manager.find_question(id)
-#    answer = data_manager.collect_answers(id)
-#    return render_template('new_answer.html', question=question, answer=answer)
-
-
-@app.route('/question_page/<question_id>/new-answer', methods=['POST'])
+@app.route('/question_page/<question_id>/new-answer', methods=['GET','POST'])
 def post_an_answer(question_id):
-    new_answer = create_answer(question_id, request.form['message'], request.form['image'])
-    data_manager.add_answer(new_answer)
-    return redirect('/')
+    if request.method=='POST':
+        new_answer = create_answer(question_id, request.form['message'], request.form['image'])
+        data_manager.add_answer(new_answer)
+        return redirect('/')
+    question = data_manager.find_question(question_id)
+    return render_template('new_answer.html', question=question)
 
 
 def create_answer(question_id, message, image):
@@ -72,6 +68,9 @@ def route_index():
     return render_template('add_question.html', result=result)
 
 
+@app.route('/question_page/<id>/vote', methods=['POST'])
+def vote():
+    vote
 
 
 if __name__=="__main__":
