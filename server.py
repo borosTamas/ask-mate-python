@@ -16,10 +16,9 @@ def show_question(question_id):
     data_manager.update_view_number(q_id=question_id)
     return render_template('question_page.html', question=question, answers=answers)
 
-
-@app.route('/question_page/<id>/edit')
-def edit_question(id):
-    result = data_manager.find_question(id)
+@app.route('/question_page/<question_id>/edit')
+def edit_question(question_id):
+    result = data_manager.find_question(q_id=question_id)
     return render_template('add_question.html', result=result)
 
 
@@ -34,7 +33,7 @@ def rewrite_question():
         'message': request.form.get('message'),
         'image': request.form.get('image')
     }
-    data_manager.update_question(updated_question)
+    data_manager.update_question(datas=updated_question)
     return redirect('/')
 
 
@@ -42,7 +41,7 @@ def rewrite_question():
 def post_an_answer(question_id):
     if request.method=='POST':
         new_answer = create_answer(question_id, request.form['message'], request.form['image'])
-        data_manager.add_answer(new_answer)
+        data_manager.add_answer(form_data=new_answer)
         return redirect('/')
     question = data_manager.find_question(question_id)
     return render_template('new_answer.html', question=question)

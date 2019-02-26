@@ -80,13 +80,13 @@ def update_answer(cursor, datas):
                    (datas['message'], datas['image'], int(datas['id'])))
 
 
-def collect_all_answer():
-    with open(ANSWERS_FILE_PATH, 'r') as all_answer:
-        result = []
-        all_answer_dict = csv.DictReader(all_answer, fieldnames=ANSWERS_HEADER)
-        for answer in all_answer_dict:
-            result.append(answer)
-        return result
+@connection.connection_handler
+def collect_all_answer(cursor):
+    cursor.execute("""
+        SELECT * FROM answer
+        """)
+    result = cursor.fetchall()
+    return result
 
 
 def id_generator():

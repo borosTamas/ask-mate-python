@@ -17,7 +17,9 @@ Title: {{question[0]['title']}}<br>
 Message:{{question[0]['message']}}<br>
 Image:{{question[0]['image']}}<br>
 
-<a href="{{url_for('edit_question', id=question['id'])}}">edit question</a>
+<form action="/question_page/{{ question['id'] }}/edit" method="POST">
+    <a href="{{url_for('edit_question', question_id=question[0]['id'], class="button")}}">edit question</a>
+</form>
 
 
 <h2>Answers:</h2>
@@ -26,7 +28,7 @@ Image:{{question[0]['image']}}<br>
     <br>
 {%endfor%}
 <form action="/question_page/{{ question['id'] }}/new-answer" method="POST">
-    <a href="{{url_for('post_an_answer',question_id=question['id'], class="button")}}">Post an Answer</a>
+    <a href="{{url_for('post_an_answer',question_id=question[0]['id'], class="button")}}">Post an Answer</a>
 </form>
 </body>
 </html>
