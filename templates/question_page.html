@@ -6,15 +6,15 @@
 </head>
 <body>
 
-ID :{{question['id']}}<br>
-Submission Time: {{question['submission_time']}}<br>
-View Number: {{question['view_number']}}<br>
-Vote Number: {{question['vote_number']}}<br>
-<form action="/question_page/<id>/vote" method="post" name="up">Vote up</form>
-<form action="/question_page/<id>/vote" method="post" name="down">Vote down</form>
-Title: {{question['title']}}<br>
-Message:{{question['message']}}<br>
-Image:{{question['image']}}<br>
+ID :{{question[0]['id']}}<br>
+Submission Time: {{question[0]['submission_time']}}<br>
+View Number: {{question[0]['view_number']}}<br>
+Vote Number: {{question[0]['vote_number']}}<br>
+<form action="/question_page/<question_id>/vote" method="post" name="up">Vote up</form>
+<form action="/question_page/<question_id>/vote" method="post" name="down">Vote down</form>
+Title: {{question[0]['title']}}<br>
+Message:{{question[0]['message']}}<br>
+Image:{{question[0]['image']}}<br>
 
 <a href="{{url_for('edit_question', id=question['id'])}}">edit question</a>
 
