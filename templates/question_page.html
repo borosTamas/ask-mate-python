@@ -25,6 +25,9 @@ Image:{{question[0]['image']}}<br>
 <h2>Answers:</h2>
 {%for answer in answers%}
     {{answer['message']}}
+    <form action="/question_page/{{ answer['id'] }}/update" method="POST">
+    <a href="{{url_for('edit_answer', answer_id=answer['id'], class="button")}}">edit answer</a>
+    </form>
     <br>
 {%endfor%}
 <form action="/question_page/{{ question['id'] }}/new-answer" method="POST">

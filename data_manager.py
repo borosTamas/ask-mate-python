@@ -72,6 +72,17 @@ def update_question(cursor, datas):
 
 
 @connection.connection_handler
+def find_answer(cursor, a_id):
+    cursor.execute("""
+    SELECT * from answer
+    where id = %(a_id)s
+    """,
+                   {'a_id': a_id})
+    result = cursor.fetchall()
+    return result
+
+
+@connection.connection_handler
 def update_answer(cursor, datas):
     cursor.execute("""
                     UPDATE answer
@@ -101,26 +112,6 @@ def add_answer(cursor, form_data):
                 VALUES (%s, %s, %s, %s, %s)""",
                    (form_data['submission_time'], form_data['vote_number'], form_data['question_id'],
                     form_data['message'], form_data['image']))
-
-
-def new_id(file_name):
-    with open(file_name, 'r') as file:
-        file_read = csv.DictReader(file, fieldnames=DATA_HEADER)
-        for row in file_read:
-            new_id = row['id']
-        return int(new_id) + 1
-
-
-def csv_questionwriter(csv_file, dictvalue1, dictvalue2):
-    with open(csv_file, 'a', newline='') as csvfile:
-        writer = csv.DictWriter(csvfile, fieldnames=DATA_HEADER)
-        question_id = new_id(csv_file)
-        view_counter = 0
-        vote_counter = 0
-        submission_time = int(time.time())
-        writer.writerow({'id': question_id, 'submission_time': submission_time, 'view_number': view_counter,
-
-                         'vote_number': vote_counter, 'title': dictvalue1, 'message': dictvalue2})
 
 
 @connection.connection_handler

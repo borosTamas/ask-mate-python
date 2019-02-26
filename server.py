@@ -39,12 +39,15 @@ def rewrite_question():
 
 @app.route('/question_page/<question_id>/new-answer', methods=['GET','POST'])
 def post_an_answer(question_id):
+    result = []
+    message = ""
     if request.method=='POST':
         new_answer = create_answer(question_id, request.form['message'], request.form['image'])
         data_manager.add_answer(form_data=new_answer)
         return redirect('/')
     question = data_manager.find_question(question_id)
-    return render_template('new_answer.html', question=question)
+    return render_template('new_answer.html', question=question, result=result, message=message)
+
 
 
 def create_answer(question_id, message, image):
@@ -55,6 +58,25 @@ def create_answer(question_id, message, image):
         'message': message,
         'image': image
     }
+
+@app.route('/question_page/<answer_id>/update')
+def edit_answer(answer_id):
+    result = data_manager.find_answer(a_id=answer_id)
+    return render_template('new_answer.html', result=result)
+
+
+@app.route('/rewrite_answer', methods=['POST'])
+def rewrite_answer():
+    updated_answer = {
+        'id': request.form.get('id'),
+        'submission_time': request.form.get('submission_time'),
+        'vote_number': request.form.get('vote_number'),
+        'question_id': request.form.get('question_id'),
+        'message': request.form.get('message'),
+        'image': request.form.get('image'),
+    }
+    data_manager.update_answer(datas=updated_answer)
+    return redirect('/')
 
 
 @app.route('/add-question',methods=['GET','POST'])
