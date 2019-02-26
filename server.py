@@ -8,9 +8,18 @@ def render_index():
     return render_template('index.html', questions=questions)
 
 
-@app.route('/question_page/<question_id>')
+@app.route('/question_page/<question_id>', methods=['GET','POST'])
 def show_question(question_id):
     question = data_manager.find_question(q_id=question_id)
+    vote = 0
+    if request.method == 'POST':
+        vote_up = request.form.get('vote_up')
+        vote_down = request.form.get('vote_down')
+        if vote_up == 'up':
+            vote += 1
+        if vote_down == 'down':
+            vote -= 1
+    data_manager.update_vote_number(vote,question[0])
     answers = data_manager.collect_answers(q_id=question_id)
     #data_manager.update_view_number(question)
     return render_template('question_page.html', question=question, answers=answers)
