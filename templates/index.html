@@ -11,9 +11,9 @@
 
 <table>
     <tbody>
-    {% for question in questions[1:]%}
+    {% for question in questions%}
     <tr>
-        <td><a href=" {{ url_for('show_question', id=question['id']) }}">
+        <td><a href=" {{ url_for('show_question', question_id=question['id']) }}">
             {{question['title']}}</a></td>
         {% endfor %}
     </tr>

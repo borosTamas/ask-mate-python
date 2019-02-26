@@ -1,6 +1,7 @@
 import csv
 import os
 import time
+import connection
 
 ANSWERS_HEADER = ['id', 'submission_time', 'vote_number', 'question_id', 'message', 'image']
 DATA_HEADER = ['id', 'submission_time', 'view_number', 'vote_number', 'title', 'message', 'image']
@@ -8,23 +9,23 @@ DATA_HEADER = ['id', 'submission_time', 'view_number', 'vote_number', 'title', '
 QUESTIONS_FILE_PATH = os.getenv('QUESTIONS_FILE_PATH', 'sample_data/question.csv')
 ANSWERS_FILE_PATH = os.getenv('ANSWERS_FILE_PATH', 'sample_data/answer.csv')
 
+@connection.connection_handler
+def collect_questions(cursor):
+    cursor.execute("""
+    SELECT * FROM question
+    """)
+    result = cursor.fetchall()
+    return result
 
-def collect_questions():
-    with open(QUESTIONS_FILE_PATH, 'r') as questions:
-        result = []
-        questions_dict = csv.DictReader(questions, fieldnames=DATA_HEADER)
-        for question in questions_dict:
-            result.append(question)
-        return result
-
-
-def find_question(id):
-    list_of_questions = collect_questions()
-    for question in list_of_questions:
-        if question['id'] == id:
-            result = question
-            return result
-
+@connection.connection_handler
+def find_question(cursor, q_id):
+    cursor.execute("""
+    SELECT * from question
+    where id = %(q_id)s
+    """,
+    {'q_id': q_id})
+    result = cursor.fetchall()
+    return result
 
 def update_view_number(question):
     view = question['view_number']
@@ -43,18 +44,16 @@ def update_vote_number(question,vote):
     update_question(question)
 
 
+@connection.connection_handler
+def collect_answers(cursor, q_id):
+    cursor.execute("""
+    SELECT * from answer
+    where question_id = %(q_id)s
+    """,
+        {'q_id': q_id})
 
-def collect_answers(id):
-    with open(ANSWERS_FILE_PATH, 'r') as answers:
-        result = []
-        answers_dict = csv.DictReader(answers, fieldnames=ANSWERS_HEADER)
-        for answers in answers_dict:
-            if answers['question_id'] == id:
-                result.append(answers)
-        if len(result) < 1:
-            result = [{'message': 'there is no answer yet'}]
-        return result
-
+    result = cursor.fetchall()
+    return result
 
 def update_question(question_dict):
     with open(QUESTIONS_FILE_PATH, 'r') as old_questions:

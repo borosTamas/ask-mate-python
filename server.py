@@ -8,11 +8,11 @@ def render_index():
     return render_template('index.html', questions=questions)
 
 
-@app.route('/question_page/<id>')
-def show_question(id):
-    question = data_manager.find_question(id)
-    answers = data_manager.collect_answers(id)
-    data_manager.update_view_number(question)
+@app.route('/question_page/<question_id>')
+def show_question(question_id):
+    question = data_manager.find_question(q_id=question_id)
+    answers = data_manager.collect_answers(q_id=question_id)
+    #data_manager.update_view_number(question)
     return render_template('question_page.html', question=question, answers=answers)
 
 @app.route('/question_page/<id>/edit')
