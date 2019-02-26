@@ -1,6 +1,6 @@
 import csv
 import os
-import datetime
+import time,datetime
 import connection
 
 ANSWERS_HEADER = ['id', 'submission_time', 'vote_number', 'question_id', 'message', 'image']
@@ -39,16 +39,13 @@ def update_view_number(cursor, q_id):
     """,
                    {'q_id': q_id})
 
-
-def update_vote_number(question, vote):
-    vote_number = question['vote_number']
-    if vote == 'up':
-        vote_number = int(vote_number) + 1
-    elif vote == 'down':
-        vote_number = int(vote_number) - 1
-    question['view_number'] = vote_number
-    update_question(question)
-
+@connection.connection_handler
+def update_vote_number(cursor,vote,q_id):
+    cursor.execute("""UPDATE question
+        set vote_number = vote_number + %(vote)d
+        WHERE question.id = %(q_id)s
+    """,
+    {'vote' : vote,'q_id' : q_id})
 
 @connection.connection_handler
 def collect_answers(cursor, q_id):
@@ -115,17 +112,15 @@ def add_answer(cursor, form_data):
 
 
 @connection.connection_handler
-def add_question(cursor, message):
-    submission_time = "time"
-    # int(time.time())
-    vote_number = "vote_number"
+def add_question(cursor,message):
+    submission_time = datetime.datetime.now()
+    vote_number = 15
     image = "img"
-    view_number = "view_number"
+    view_number = 0
     title = "title"
     cursor.execute("""
                     INSERT INTO question(submission_time, view_number, vote_number, title, message, image)
                     VALUES (%(submission_time)s,%(view_number)s,%(vote_number)s, %(title)s,%(message)s,%(image)s);
                    """,
-
-                   {'submission_time': submission_time, 'view_number': view_number, 'vote_number': vote_number,
-                    'title': title, 'message': message, 'image': image})
+                   {'submission_time' : submission_time,'view_number' : view_number,'vote_number': vote_number,
+                    'title' : title, 'message': message, 'image' : image})
