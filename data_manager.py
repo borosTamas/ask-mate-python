@@ -1,6 +1,6 @@
 import csv
 import os
-import time
+import datetime
 import connection
 
 ANSWERS_HEADER = ['id', 'submission_time', 'vote_number', 'question_id', 'message', 'image']
@@ -89,17 +89,8 @@ def collect_all_answer(cursor):
     return result
 
 
-def id_generator():
-    new_id = collect_all_answer()[-1]['id']
-    if new_id == 'id':
-        new_id = 1
-    else:
-        new_id = int(new_id) + 1
-    return new_id
-
-
 def submission_time_generator():
-    submission_time = int(time.time())
+    submission_time = datetime.datetime.now()
     return submission_time
 
 
@@ -107,7 +98,7 @@ def submission_time_generator():
 def add_answer(cursor, form_data):
     cursor.execute("""
                 INSERT INTO answer(submission_time, vote_number, question_id, message, image)
-                VALUES (%s, %s, %s, %s, %s, %s)""",
+                VALUES (%s, %s, %s, %s, %s)""",
                    (form_data['submission_time'], form_data['vote_number'], form_data['question_id'],
                     form_data['message'], form_data['image']))
 

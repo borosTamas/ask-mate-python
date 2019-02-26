@@ -49,7 +49,6 @@ def post_an_answer(question_id):
 
 def create_answer(question_id, message, image):
     return {
-        'id': data_manager.id_generator(),
         'submission_time': data_manager.submission_time_generator(),
         'vote_number': 1,
         'question_id': question_id,
