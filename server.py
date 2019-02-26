@@ -1,5 +1,6 @@
-from flask import Flask, render_template,request, redirect
+from flask import Flask, render_template, request, redirect
 import data_manager
+
 app = Flask(__name__)
 
 
@@ -9,21 +10,24 @@ def render_index():
     return render_template('index.html', questions=questions)
 
 
-@app.route('/question_page/<question_id>', methods=['GET','POST'])
+@app.route('/question_page/<question_id>/vote')
+def vote(question_id,vote_ud):
+    vote = 0
+    if vote_ud == 'up':
+        vote += 1
+    if vote_ud == 'down':
+        vote -= 1
+    data_manager.update_vote_number(vote=vote, q_id=question_id)
+    return redirect('/question_page/<question_id>')
+
+
+@app.route('/question_page/<question_id>')
 def show_question(question_id):
     question = data_manager.find_question(q_id=question_id)
-    vote = 0
-    if request.method == 'POST':
-        vote_up = request.form.get('vote_up')
-        vote_down = request.form.get('vote_down')
-        if vote_up == 'up':
-            vote += 1
-        if vote_down == 'down':
-            vote -= 1
-    data_manager.update_vote_number(vote,question[0])
     answers = data_manager.collect_answers(q_id=question_id)
     data_manager.update_view_number(q_id=question_id)
     return render_template('question_page.html', question=question, answers=answers)
+
 
 @app.route('/question_page/<question_id>/edit')
 def edit_question(question_id):
@@ -46,9 +50,9 @@ def rewrite_question():
     return redirect('/')
 
 
-@app.route('/question_page/<question_id>/new-answer', methods=['GET','POST'])
+@app.route('/question_page/<question_id>/new-answer', methods=['GET', 'POST'])
 def post_an_answer(question_id):
-    if request.method=='POST':
+    if request.method == 'POST':
         new_answer = create_answer(question_id, request.form['message'], request.form['image'])
         data_manager.add_answer(form_data=new_answer)
         return redirect('/')
@@ -66,25 +70,19 @@ def create_answer(question_id, message, image):
     }
 
 
-@app.route('/add-question',methods=['GET','POST'])
+@app.route('/add-question', methods=['GET', 'POST'])
 def add_question():
     result = []
     message = ""
     if request.method == 'POST':
-
         question_name = request.form.get('question_name')
         message = request.form.get('message')
         data_manager.add_question(message)
         return redirect('/')
-    return render_template('add_question.html', message=message,result = result)
+    return render_template('add_question.html', message=message, result=result)
 
 
-@app.route('/question_page/<id>/vote', methods=['POST'])
-def vote():
-    vote
-
-
-if __name__=="__main__":
+if __name__ == "__main__":
     app.run(
         debug=True,
         port=5000

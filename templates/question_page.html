@@ -2,35 +2,37 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title> {{question['title']}}</title>
+    <title> {{ question['title'] }}</title>
 </head>
 <body>
 <div id="Home_button">{% include 'home_button.html' %}</div>
 <br>
-ID :{{question[0]['id']}}<br>
-Submission Time: {{question[0]['submission_time']}}<br>
-View Number: {{question[0]['view_number']}}<br>
-Vote Number: {{question[0]['vote_number']}}<br>
-Title: {{question[0]['title']}}<br>
-Message:{{question[0]['message']}}<br>
-Image:{{question[0]['image']}}<br>
+ID :{{ question[0]['id'] }}<br>
+Submission Time: {{ question[0]['submission_time'] }}<br>
+View Number: {{ question[0]['view_number'] }}<br>
+Vote Number: {{ question[0]['vote_number'] }}<br>
+Title: {{ question[0]['title'] }}<br>
+Message:{{ question[0]['message'] }}<br>
+Image:{{ question[0]['image'] }}<br>
 
-<a href="{{url_for('edit_question', id=question['id'])}}">edit question</a>
-<p></p>
-<form>
-    <input type="radio" name="vote_up" value="up" checked> Vote UP<br>
-    <input type="radio" name="vote_down" value="down" checked> Vote DOWN<br>
-    <input type="submit" value="Submit">
+<form action="/question_page/{{ question['id'] }}/edit" method="POST">
+<a href="{{ url_for('edit_question', question_id=question[0]['id']) }}">edit question</a>
 </form>
 
 
+<a href="{{ url_for('vote',question_id=question[0]['id'], vote_ud="up") }}">
+ Vote UP<br></a>
+<a href="{{ url_for('vote', question_id=question[0]['id'], vote_ud="down") }}">
+ Vote DOWN<br></a>
+
+
 <h2>Answers:</h2>
-{%for answer in answers%}
-    {{answer['message']}}
+{% for answer in answers %}
+    {{ answer['message'] }}
     <br>
-{%endfor%}
+{% endfor %}
 <form action="/question_page/{{ question['id'] }}/new-answer" method="POST">
-    <a href="{{url_for('post_an_answer',question_id=question[0]['id'], class="button")}}">Post an Answer</a>
+    <a href="{{ url_for('post_an_answer',question_id=question[0]['id'], class="button") }}">Post an Answer</a>
 </form>
 </body>
 </html>
