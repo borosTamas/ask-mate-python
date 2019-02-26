@@ -5,6 +5,7 @@
     <title>Add New Question</title>
 </head>
 <body>
+{% include 'home_button.html' %}
 {% if result == [] %}
 <h1>Add New Question</h1>
 <form actions="/add-question" method="post">

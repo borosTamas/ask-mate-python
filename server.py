@@ -2,6 +2,7 @@ from flask import Flask, render_template,request, redirect
 import data_manager
 app = Flask(__name__)
 
+
 @app.route('/')
 def render_index():
     questions = data_manager.collect_questions()
@@ -12,13 +13,15 @@ def render_index():
 def show_question(question_id):
     question = data_manager.find_question(q_id=question_id)
     answers = data_manager.collect_answers(q_id=question_id)
-    #data_manager.update_view_number(question)
+    data_manager.update_view_number(q_id=question_id)
     return render_template('question_page.html', question=question, answers=answers)
+
 
 @app.route('/question_page/<id>/edit')
 def edit_question(id):
     result = data_manager.find_question(id)
     return render_template('add_question.html', result=result)
+
 
 @app.route('/rewrite_question', methods=['POST'])
 def rewrite_question():

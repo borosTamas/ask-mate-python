@@ -9,6 +9,7 @@ DATA_HEADER = ['id', 'submission_time', 'view_number', 'vote_number', 'title', '
 QUESTIONS_FILE_PATH = os.getenv('QUESTIONS_FILE_PATH', 'sample_data/question.csv')
 ANSWERS_FILE_PATH = os.getenv('ANSWERS_FILE_PATH', 'sample_data/answer.csv')
 
+
 @connection.connection_handler
 def collect_questions(cursor):
     cursor.execute("""
@@ -17,24 +18,29 @@ def collect_questions(cursor):
     result = cursor.fetchall()
     return result
 
+
 @connection.connection_handler
 def find_question(cursor, q_id):
     cursor.execute("""
     SELECT * from question
     where id = %(q_id)s
     """,
-    {'q_id': q_id})
+                   {'q_id': q_id})
     result = cursor.fetchall()
     return result
 
-def update_view_number(question):
-    view = question['view_number']
-    view = int(view)+1
-    question['view_number'] = view
-    update_question(question)
+
+@connection.connection_handler
+def update_view_number(cursor, q_id):
+    cursor.execute("""
+    update question
+    set view_number = view_number+1
+    where id = %(q_id)s
+    """,
+                   {'q_id': q_id})
 
 
-def update_vote_number(question,vote):
+def update_vote_number(question, vote):
     vote_number = question['vote_number']
     if vote == 'up':
         vote_number = int(vote_number) + 1
@@ -50,13 +56,14 @@ def collect_answers(cursor, q_id):
     SELECT * from answer
     where question_id = %(q_id)s
     """,
-        {'q_id': q_id})
+                   {'q_id': q_id})
 
     result = cursor.fetchall()
     return result
 
+
 @connection.connection_handler
-def update_question(cursor,datas):
+def update_question(cursor, datas):
     cursor.execute("""
                     UPDATE question 
                     SET message=%s, image=%s
@@ -65,7 +72,7 @@ def update_question(cursor,datas):
 
 
 @connection.connection_handler
-def update_answer(cursor,datas):
+def update_answer(cursor, datas):
     cursor.execute("""
                     UPDATE answer
                     SET message=%s, image=%s 
@@ -126,9 +133,9 @@ def csv_questionwriter(csv_file, dictvalue1, dictvalue2):
 
 
 @connection.connection_handler
-def add_question(cursor,message):
+def add_question(cursor, message):
     submission_time = "time"
-        #int(time.time())
+    # int(time.time())
     vote_number = "vote_number"
     image = "img"
     view_number = "view_number"
@@ -138,9 +145,5 @@ def add_question(cursor,message):
                     VALUES (%(submission_time)s,%(view_number)s,%(vote_number)s, %(title)s,%(message)s,%(image)s);
                    """,
 
-                   {'submission_time': submission_time, 'view_number' : view_number,'vote_number': vote_number,
-                    'title' : title, 'message': message, 'image' : image})
-
-
-
-
+                   {'submission_time': submission_time, 'view_number': view_number, 'vote_number': vote_number,
+                    'title': title, 'message': message, 'image': image})
