@@ -5,7 +5,8 @@
     <title> {{question['title']}}</title>
 </head>
 <body>
-
+<div id="Home_button">{% include 'home_button.html' %}</div>
+<br>
 ID :{{question[0]['id']}}<br>
 Submission Time: {{question[0]['submission_time']}}<br>
 View Number: {{question[0]['view_number']}}<br>
@@ -29,7 +30,7 @@ Image:{{question[0]['image']}}<br>
     <br>
 {%endfor%}
 <form action="/question_page/{{ question['id'] }}/new-answer" method="POST">
-    <a href="{{url_for('post_an_answer',question_id=question['id'], class="button")}}">Post an Answer</a>
+    <a href="{{url_for('post_an_answer',question_id=question[0]['id'], class="button")}}">Post an Answer</a>
 </form>
 </body>
 </html>

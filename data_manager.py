@@ -9,6 +9,7 @@ DATA_HEADER = ['id', 'submission_time', 'view_number', 'vote_number', 'title', '
 QUESTIONS_FILE_PATH = os.getenv('QUESTIONS_FILE_PATH', 'sample_data/question.csv')
 ANSWERS_FILE_PATH = os.getenv('ANSWERS_FILE_PATH', 'sample_data/answer.csv')
 
+
 @connection.connection_handler
 def collect_questions(cursor):
     cursor.execute("""
@@ -17,21 +18,26 @@ def collect_questions(cursor):
     result = cursor.fetchall()
     return result
 
+
 @connection.connection_handler
 def find_question(cursor, q_id):
     cursor.execute("""
     SELECT * from question
     where id = %(q_id)s
     """,
-    {'q_id': q_id})
+                   {'q_id': q_id})
     result = cursor.fetchall()
     return result
 
-def update_view_number(question):
-    view = question['view_number']
-    view = int(view)+1
-    question['view_number'] = view
-    update_question(question)
+
+@connection.connection_handler
+def update_view_number(cursor, q_id):
+    cursor.execute("""
+    update question
+    set view_number = view_number+1
+    where id = %(q_id)s
+    """,
+                   {'q_id': q_id})
 
 @connection.connection_handler
 def update_vote_number(cursor,vote,q_id):
@@ -47,13 +53,14 @@ def collect_answers(cursor, q_id):
     SELECT * from answer
     where question_id = %(q_id)s
     """,
-        {'q_id': q_id})
+                   {'q_id': q_id})
 
     result = cursor.fetchall()
     return result
 
+
 @connection.connection_handler
-def update_question(cursor,datas):
+def update_question(cursor, datas):
     cursor.execute("""
                     UPDATE question 
                     SET message=%s, image=%s
@@ -62,7 +69,7 @@ def update_question(cursor,datas):
 
 
 @connection.connection_handler
-def update_answer(cursor,datas):
+def update_answer(cursor, datas):
     cursor.execute("""
                     UPDATE answer
                     SET message=%s, image=%s 
@@ -70,26 +77,17 @@ def update_answer(cursor,datas):
                    (datas['message'], datas['image'], int(datas['id'])))
 
 
-def collect_all_answer():
-    with open(ANSWERS_FILE_PATH, 'r') as all_answer:
-        result = []
-        all_answer_dict = csv.DictReader(all_answer, fieldnames=ANSWERS_HEADER)
-        for answer in all_answer_dict:
-            result.append(answer)
-        return result
-
-
-def id_generator():
-    new_id = collect_all_answer()[-1]['id']
-    if new_id == 'id':
-        new_id = 1
-    else:
-        new_id = int(new_id) + 1
-    return new_id
+@connection.connection_handler
+def collect_all_answer(cursor):
+    cursor.execute("""
+        SELECT * FROM answer
+        """)
+    result = cursor.fetchall()
+    return result
 
 
 def submission_time_generator():
-    submission_time = int(time.time())
+    submission_time = datetime.datetime.now()
     return submission_time
 
 
@@ -97,7 +95,7 @@ def submission_time_generator():
 def add_answer(cursor, form_data):
     cursor.execute("""
                 INSERT INTO answer(submission_time, vote_number, question_id, message, image)
-                VALUES (%s, %s, %s, %s, %s, %s)""",
+                VALUES (%s, %s, %s, %s, %s)""",
                    (form_data['submission_time'], form_data['vote_number'], form_data['question_id'],
                     form_data['message'], form_data['image']))
 
@@ -135,7 +133,3 @@ def add_question(cursor,message):
                    """,
                    {'submission_time' : submission_time,'view_number' : view_number,'vote_number': vote_number,
                     'title' : title, 'message': message, 'image' : image})
-
-
-
-

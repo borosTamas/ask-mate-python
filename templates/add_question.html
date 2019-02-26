@@ -5,6 +5,7 @@
     <title>Add New Question</title>
 </head>
 <body>
+{% include 'home_button.html' %}
 {% if result == [] %}
 <h1>Add New Question</h1>
 <form actions="/add-question" method="post">
@@ -19,15 +20,15 @@
 <h1>Edit Question</h1>
 <form action="/rewrite_question", method="post">
     Question Name: <br>
-    <input type="text" name="title" value="{{result['title']}}"><br>
+    <input type="text" name="title" value="{{result[0]['title']}}"><br>
     Question: <br>
-    <textarea type="text" rows="10" cols="40" name="message">{{result['message']}}</textarea><br>
+    <textarea type="text" rows="10" cols="40" name="message">{{result[0]['message']}}</textarea><br>
     <br>
-    <input type="hidden" name="id" value="{{ result['id'] }}">
-    <input type="hidden" name="submission_time" value="{{ result['submission_time'] }}">
-    <input type="hidden" name="view_number" value="{{ result['view_number'] }}">
-    <input type="hidden" name="vote_number" value="{{ result['vote_number'] }}">
-    <input type="hidden" name="image" value="{{ result['image'] }}">
+    <input type="hidden" name="id" value="{{ result[0]['id'] }}">
+    <input type="hidden" name="submission_time" value="{{ result[0]['submission_time'] }}">
+    <input type="hidden" name="view_number" value="{{ result[0]['view_number'] }}">
+    <input type="hidden" name="vote_number" value="{{ result[0]['vote_number'] }}">
+    <input type="hidden" name="image" value="{{ result[0]['image'] }}">
 
         <input type="submit">
     {% endif %}

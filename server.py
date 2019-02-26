@@ -2,6 +2,7 @@ from flask import Flask, render_template,request, redirect
 import data_manager
 app = Flask(__name__)
 
+
 @app.route('/')
 def render_index():
     questions = data_manager.collect_questions()
@@ -21,13 +22,14 @@ def show_question(question_id):
             vote -= 1
     data_manager.update_vote_number(vote,question[0])
     answers = data_manager.collect_answers(q_id=question_id)
-    #data_manager.update_view_number(question)
+    data_manager.update_view_number(q_id=question_id)
     return render_template('question_page.html', question=question, answers=answers)
 
-@app.route('/question_page/<id>/edit')
-def edit_question(id):
-    result = data_manager.find_question(id)
+@app.route('/question_page/<question_id>/edit')
+def edit_question(question_id):
+    result = data_manager.find_question(q_id=question_id)
     return render_template('add_question.html', result=result)
+
 
 @app.route('/rewrite_question', methods=['POST'])
 def rewrite_question():
@@ -40,7 +42,7 @@ def rewrite_question():
         'message': request.form.get('message'),
         'image': request.form.get('image')
     }
-    data_manager.update_question(updated_question)
+    data_manager.update_question(datas=updated_question)
     return redirect('/')
 
 
@@ -48,7 +50,7 @@ def rewrite_question():
 def post_an_answer(question_id):
     if request.method=='POST':
         new_answer = create_answer(question_id, request.form['message'], request.form['image'])
-        data_manager.add_answer(new_answer)
+        data_manager.add_answer(form_data=new_answer)
         return redirect('/')
     question = data_manager.find_question(question_id)
     return render_template('new_answer.html', question=question)
@@ -56,7 +58,6 @@ def post_an_answer(question_id):
 
 def create_answer(question_id, message, image):
     return {
-        'id': data_manager.id_generator(),
         'submission_time': data_manager.submission_time_generator(),
         'vote_number': 1,
         'question_id': question_id,

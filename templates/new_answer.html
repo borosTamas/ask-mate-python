@@ -5,11 +5,12 @@
     <title>Post an Answer</title>
 </head>
 <body>
+{% include 'home_button.html' %}
 <h1>Post an Answer</h1>
-<form action="/question_page/{{ question['id'] }}/new-answer" method="post">
+<form action="/question_page/{{ question[0]['id'] }}/new-answer" method="post">
     <td>Question ID</td>
     <br>
-    <input type="text" name="question" id="question" value="{{ question['id'] }}"><br>
+    <input type="text" name="question" id="question" value="{{ question[0]['id'] }}"><br>
     <td>Message</td>
     <br>
     <textarea name="message" id="message" aria-multiline="true"></textarea><br>
