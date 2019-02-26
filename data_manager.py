@@ -121,4 +121,26 @@ def csv_questionwriter(csv_file, dictvalue1, dictvalue2):
         vote_counter = 0
         submission_time = int(time.time())
         writer.writerow({'id': question_id, 'submission_time': submission_time, 'view_number': view_counter,
+
                          'vote_number': vote_counter, 'title': dictvalue1, 'message': dictvalue2})
+
+
+@connection.connection_handler
+def add_question(cursor,message):
+    submission_time = "time"
+        #int(time.time())
+    vote_number = "vote_number"
+    image = "img"
+    view_number = "view_number"
+    title = "title"
+    cursor.execute("""
+                    INSERT INTO question(submission_time, view_number, vote_number, title, message, image)
+                    VALUES (%(submission_time)s,%(view_number)s,%(vote_number)s, %(title)s,%(message)s,%(image)s);
+                   """,
+
+                   {'submission_time': submission_time, 'view_number' : view_number,'vote_number': vote_number,
+                    'title' : title, 'message': message, 'image' : image})
+
+
+
+

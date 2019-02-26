@@ -57,15 +57,16 @@ def create_answer(question_id, message, image):
 
 
 @app.route('/add-question',methods=['GET','POST'])
-def route_index():
+def add_question():
     result = []
+    message = ""
     if request.method == 'POST':
 
         question_name = request.form.get('question_name')
-        question = request.form.get('question')
-        data_manager.csv_questionwriter('sample_data/question.csv',question_name,question)
+        message = request.form.get('message')
+        data_manager.add_question(message)
         return redirect('/')
-    return render_template('add_question.html', result=result)
+    return render_template('add_question.html', message=message,result = result)
 
 
 @app.route('/question_page/<id>/vote', methods=['POST'])
