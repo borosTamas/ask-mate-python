@@ -55,22 +55,22 @@ def collect_answers(cursor, q_id):
     result = cursor.fetchall()
     return result
 
-def update_question(question_dict):
-    with open(QUESTIONS_FILE_PATH, 'r') as old_questions:
-        old_question_dict = csv.DictReader(old_questions, fieldnames=DATA_HEADER)
-        temporary_list = []
-        for row in old_question_dict:
-            if row['id'] == question_dict['id']:
-                row = question_dict
-                temporary_list.append(row)
-            else:
-                temporary_list.append(row)
+@connection.connection_handler
+def update_question(cursor,datas):
+    cursor.execute("""
+                    UPDATE question 
+                    SET message=%s, image=%s
+                    WHERE id=%s""",
+                   (datas['message'], datas['image'], int(datas['id'])))
 
-    with open(QUESTIONS_FILE_PATH, 'w') as new_qestions:
-        new_qestion_dict = csv.DictWriter(new_qestions, fieldnames=DATA_HEADER)
-        new_qestion_dict.writeheader()
-        for row in temporary_list[1:]:
-            new_qestion_dict.writerow(row)
+
+@connection.connection_handler
+def update_answer(cursor,datas):
+    cursor.execute("""
+                    UPDATE answer
+                    SET message=%s, image=%s 
+                    WHERE id=%s""",
+                   (datas['message'], datas['image'], int(datas['id'])))
 
 
 def collect_all_answer():
@@ -96,10 +96,13 @@ def submission_time_generator():
     return submission_time
 
 
-def add_answer(form_data):
-    with open(ANSWERS_FILE_PATH, 'a', newline='') as csv_file:
-        writer = csv.DictWriter(csv_file, fieldnames=ANSWERS_HEADER)
-        writer.writerow(form_data)
+@connection.connection_handler
+def add_answer(cursor, form_data):
+    cursor.execute("""
+                INSERT INTO answer(submission_time, vote_number, question_id, message, image)
+                VALUES (%s, %s, %s, %s, %s, %s)""",
+                   (form_data['submission_time'], form_data['vote_number'], form_data['question_id'],
+                    form_data['message'], form_data['image']))
 
 
 def new_id(file_name):
