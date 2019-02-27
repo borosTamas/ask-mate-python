@@ -16,15 +16,19 @@ def show_all_question():
     return render_template('all_question.html', questions=questions)
 
 
-@app.route('/question_page/<question_id>/vote')
-def vote(question_id,vote_ud):
-    vote = 0
-    if vote_ud == 'up':
-        vote += 1
-    if vote_ud == 'down':
-        vote -= 1
-    data_manager.update_vote_number(vote=vote, q_id=question_id)
-    return redirect('/question_page/<question_id>')
+@app.route('/question_page/vote',methods=['GET','POST'])
+def vote():
+    vote = int(request.form.get('vote_num'))
+    vote_up = request.form.get('vote_up')
+    vote_down = request.form.get('vote_down')
+    q_id = request.form.get('q_id')
+    if request.method == 'POST':
+        if vote_up == 'up':
+            vote += 1
+        elif vote_down == 'down':
+            vote -= 1
+        data_manager.update_vote_number(vote=vote, q_id=q_id)
+        return redirect('/')
 
 
 @app.route('/search', methods=['POST'])
