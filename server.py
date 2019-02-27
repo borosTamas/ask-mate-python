@@ -16,7 +16,6 @@ def show_all_question():
     return render_template('all_question.html', questions=questions)
 
 
-
 @app.route('/all_question/sort',methods=['GET', 'POST'])
 def show_all_sorted_question():
     questions = sort_questions()
@@ -29,8 +28,6 @@ def sort_questions():
     option = request.form.get('options')
     result = data_manager.sort_questions(option=option, how=sort_options)
     return result
-
-
 
 
 @app.route('/question_page/vote',methods=['GET','POST'])
@@ -119,7 +116,6 @@ def post_an_answer(question_id):
         return redirect('/')
     question = data_manager.find_question(question_id)
     return render_template('new_answer.html', question=question, result=result, message=message)
-
 
 
 def create_answer(question_id, message, image):
