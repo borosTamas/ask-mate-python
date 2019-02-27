@@ -16,6 +16,23 @@ def show_all_question():
     return render_template('all_question.html', questions=questions)
 
 
+
+@app.route('/all_question/sort',methods=['GET', 'POST'])
+def show_all_sorted_question():
+    questions = sort_questions()
+    return render_template('all_question.html', questions=questions)
+
+
+
+def sort_questions():
+    sort_options = request.form.get('sort_options')
+    option = request.form.get('options')
+    result = data_manager.sort_questions(option=option, how=sort_options)
+    return result
+
+
+
+
 @app.route('/question_page/vote',methods=['GET','POST'])
 def vote():
     vote = int(request.form.get('vote_num'))
