@@ -97,11 +97,22 @@ def add_question():
     result = []
     message = ""
     if request.method == 'POST':
-        question_name = request.form.get('question_name')
-        message = request.form.get('message')
-        data_manager.add_question(message)
+        new_question = create_question(request.form['message'], request.form['image'], request.form['title'])
+        data_manager.add_question(from_data=new_question)
         return redirect('/')
-    return render_template('add_question.html', message=message, result=result)
+    return render_template('add_question.html', result=result, message=message)
+
+
+def create_question(message, image, title):
+    return {
+        'submission_time': data_manager.submission_time_generator(),
+        'vote_number': 1,
+        'message': message,
+        'title': title,
+        'image': image,
+        'view_number' : 1
+    }
+
 
 
 if __name__ == "__main__":

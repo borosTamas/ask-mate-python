@@ -63,9 +63,9 @@ def collect_answers(cursor, q_id):
 def update_question(cursor, datas):
     cursor.execute("""
                     UPDATE question 
-                    SET message=%s, image=%s
+                    SET title=%s, message=%s, image=%s
                     WHERE id=%s""",
-                   (datas['message'], datas['image'], int(datas['id'])))
+                   (datas['title'],datas['message'], datas['image'], int(datas['id'])))
 
 
 @connection.connection_handler
@@ -112,15 +112,10 @@ def add_answer(cursor, form_data):
 
 
 @connection.connection_handler
-def add_question(cursor,message):
-    submission_time = datetime.datetime.now()
-    vote_number = 15
-    image = "img"
-    view_number = 0
-    title = "title"
+def add_question(cursor,from_data):
     cursor.execute("""
                     INSERT INTO question(submission_time, view_number, vote_number, title, message, image)
-                    VALUES (%(submission_time)s,%(view_number)s,%(vote_number)s, %(title)s,%(message)s,%(image)s);
-                   """,
-                   {'submission_time' : submission_time,'view_number' : view_number,'vote_number': vote_number,
-                    'title' : title, 'message': message, 'image' : image})
+                    VALUES (%s,%s,%s, %s,%s,%s)""",
+                   (from_data['submission_time'], from_data['view_number'], from_data['vote_number'], from_data['title'],
+                    from_data['message'], from_data['image']))
+

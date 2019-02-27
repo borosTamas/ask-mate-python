@@ -10,9 +10,11 @@
 <h1>Add New Question</h1>
 <form actions="/add-question" method="post">
     Question Name: <br>
-    <input type="text" name="question_name"><br>
+    <input type="text" name="title"><br>
     Question: <br>
     <textarea type="text" rows="10" cols="40" name="message"></textarea><br>
+    Image: <br>
+    <textarea type="text" rows="1" cols="40" name="image"></textarea>
     <br>
     <input type="submit">
 </form>
@@ -20,7 +22,7 @@
 <h1>Edit Question</h1>
 <form action="/rewrite_question", method="post">
     Question Name: <br>
-    <input type="text" name="title" value="{{result[0]['title']}}"><br>
+    <textarea type="text" rows="1" cols="40" name="title" >{{result[0]['title']}}</textarea><br>
     Question: <br>
     <textarea type="text" rows="10" cols="40" name="message">{{result[0]['message']}}</textarea><br>
     <br>
