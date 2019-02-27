@@ -172,14 +172,23 @@ def add_answer(cursor, form_data):
                     form_data['message'], form_data['image']))
 
 
-# TODO delete this maybe
 @connection.connection_handler
-def search_question_id(cursor, title_name):
+def add_comment_to_question(cursor, q_id, comment_message):
     cursor.execute("""
-        select id from question
-        where title = %(title_name)s 
+                    insert into comment(question_id, message)
+                    values (%(q_id)s,%(comment_message)s)
+                    
     """,
-                   {'title_name': title_name})
+                   {'q_id': q_id, 'comment_message': comment_message})
+
+
+@connection.connection_handler
+def collect_comment(cursor, q_id):
+    cursor.execute("""
+                    Select message from comment
+                    where question_id = %(q_id)s
+    """,
+                   {'q_id': q_id})
     result = cursor.fetchall()
     return result
 

@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title> ADD COMMENT</title>
+</head>
+<body>
+<h1> Add Comment</h1>
+<form action="{{ url_for('add_comment', question_id=question_id)}}" method="post">
+   Comment: <br>
+    <textarea type="text" rows="10" cols="40" name="message"></textarea><br>
+    <input type="submit" value="Add Comment">
+</form>
+</body>
+</html>

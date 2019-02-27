@@ -64,8 +64,11 @@ def search():
 def show_question(question_id):
     question = data_manager.find_question(q_id=question_id)
     answers = data_manager.collect_answers(q_id=question_id)
+    print(answers)
     data_manager.update_view_number(q_id=question_id)
-    return render_template('question_page.html', question=question, answers=answers)
+    comment = data_manager.collect_comment(q_id=question_id)
+    print(comment)
+    return render_template('question_page.html', question=question, answers=answers, comment=comment)
 
 
 @app.route('/question_page/<question_id>/edit')
@@ -153,6 +156,14 @@ def create_question(message, image, title):
         'view_number' : 1
     }
 
+
+@app.route('/question_page/<question_id>/comment', methods=['GET','POST'])
+def add_comment(question_id):
+    if request.method=='POST':
+        message = request.form['message']
+        data_manager.add_comment_to_question(q_id=question_id, comment_message=message)
+        return show_question(question_id)
+    return render_template('add_comment.html', question_id=question_id)
 
 
 if __name__ == "__main__":
