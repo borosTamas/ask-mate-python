@@ -18,6 +18,33 @@ def collect_questions(cursor):
     return result
 
 @connection.connection_handler
+def delete_question(cursor, q_id):
+    cursor.execute("""
+    delete from question
+    where id = %(q_id)s   
+    """,
+        {'q_id': q_id})
+    cursor.execute("""
+    delete from answer
+    where question_id = %(q_id)s   
+    """,
+        {'q_id': q_id})
+
+@connection.connection_handler
+def find_searched_questions(cursor, searched_data):
+    searched_data = "%"+searched_data+"%"
+    cursor.execute("""
+    select * from question
+    where title  ilike %(searched_data)s
+    OR 
+    message ilike %(searched_data)s
+    """,
+                   {'searched_data': searched_data})
+    result = cursor.fetchall()
+    return result
+
+
+@connection.connection_handler
 def collect_latest_5_question(cursor):
     cursor.execute("""
     SELECT * FROM question
@@ -118,7 +145,7 @@ def add_answer(cursor, form_data):
                    (form_data['submission_time'], form_data['vote_number'], form_data['question_id'],
                     form_data['message'], form_data['image']))
 
-
+# TODO delete this maybe
 @connection.connection_handler
 def search_question_id(cursor, title_name):
     cursor.execute("""

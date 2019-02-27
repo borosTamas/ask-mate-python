@@ -17,7 +17,7 @@ def show_all_question():
 
 
 @app.route('/question_page/<question_id>/vote')
-def vote(question_id,vote_ud):
+def vote():
     vote = 0
     if vote_ud == 'up':
         vote += 1
@@ -26,15 +26,17 @@ def vote(question_id,vote_ud):
     data_manager.update_vote_number(vote=vote, q_id=question_id)
     return redirect('/question_page/<question_id>')
 
+#@app.route('/question_page/<question_id>')
+
 
 @app.route('/search', methods=['POST'])
 def search():
-    question_title = request.form.get('question_title')
-    question_id = data_manager.search_question_id(question_title)
-    if question_id == []:
-        return redirect('/')
-    else:
-        return show_question(question_id[0]['id'])
+    question_data = request.form.get('question_data')
+    print(question_data)
+    result = data_manager.find_searched_questions(searched_data=question_data)
+    print(result)
+    return render_template('all_question.html', questions=result)
+
 
 @app.route('/question_page/<question_id>')
 def show_question(question_id):
@@ -77,7 +79,6 @@ def post_an_answer(question_id):
     return render_template('new_answer.html', question=question, result=result, message=message)
 
 
-
 def create_answer(question_id, message, image):
     return {
         'submission_time': data_manager.submission_time_generator(),
@@ -86,6 +87,7 @@ def create_answer(question_id, message, image):
         'message': message,
         'image': image
     }
+
 
 @app.route('/question_page/<answer_id>/update')
 def edit_answer(answer_id):
