@@ -9,6 +9,7 @@ def render_index():
     questions = data_manager.collect_latest_5_question()
     return render_template('index.html', questions=questions)
 
+
 @app.route('/all_question')
 def show_all_question():
     questions = data_manager.collect_questions()
@@ -25,6 +26,15 @@ def vote(question_id,vote_ud):
     data_manager.update_vote_number(vote=vote, q_id=question_id)
     return redirect('/question_page/<question_id>')
 
+
+@app.route('/search', methods=['POST'])
+def search():
+    question_title = request.form.get('question_title')
+    question_id = data_manager.search_question_id(question_title)
+    if question_id == []:
+        return redirect('/')
+    else:
+        return show_question(question_id[0]['id'])
 
 @app.route('/question_page/<question_id>')
 def show_question(question_id):

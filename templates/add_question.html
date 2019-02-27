@@ -20,7 +20,7 @@
 </form>
 {% else %}
 <h1>Edit Question</h1>
-<form action="/rewrite_question", method="post">
+<form action="/rewrite_question" method="post">
     Question Name: <br>
     <textarea type="text" rows="1" cols="40" name="title" >{{result[0]['title']}}</textarea><br>
     Question: <br>

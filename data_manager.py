@@ -1,4 +1,3 @@
-import csv
 import os
 import time,datetime
 import connection
@@ -118,6 +117,17 @@ def add_answer(cursor, form_data):
                 VALUES (%s, %s, %s, %s, %s)""",
                    (form_data['submission_time'], form_data['vote_number'], form_data['question_id'],
                     form_data['message'], form_data['image']))
+
+
+@connection.connection_handler
+def search_question_id(cursor, title_name):
+    cursor.execute("""
+        select id from question
+        where title = %(title_name)s 
+    """,
+                   {'title_name': title_name})
+    result = cursor.fetchall()
+    return result
 
 
 @connection.connection_handler
