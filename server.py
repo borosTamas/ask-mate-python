@@ -48,6 +48,22 @@ def vote():
         return redirect('/')
 
 
+@app.route('/question_page/<question_id>/delete')
+def delete_question(question_id):
+    data_manager.delete_question(q_id=question_id)
+    return show_all_question()
+    vote = int(request.form.get('vote_num'))
+    vote_up = request.form.get('vote_up')
+    vote_down = request.form.get('vote_down')
+    q_id = request.form.get('q_id')
+    if request.method == 'POST':
+        if vote_up == 'up':
+            vote += 1
+        elif vote_down == 'down':
+            vote -= 1
+        data_manager.update_vote_number(vote=vote, q_id=q_id)
+        return redirect('/')
+
 @app.route('/question_page/<question_id>/<answer_id>/answer-delete')
 def delete_answer(question_id, answer_id):
     data_manager.delete_answer(q_id=question_id, a_id=answer_id)
@@ -69,6 +85,7 @@ def show_question(question_id):
     comment = data_manager.collect_comment(q_id=question_id)
     print(comment)
     return render_template('question_page.html', question=question, answers=answers, comment=comment)
+
 
 
 @app.route('/question_page/<question_id>/edit')
