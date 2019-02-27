@@ -6,8 +6,13 @@ app = Flask(__name__)
 
 @app.route('/')
 def render_index():
-    questions = data_manager.collect_questions()
+    questions = data_manager.collect_latest_5_question()
     return render_template('index.html', questions=questions)
+
+@app.route('/all_question')
+def show_all_question():
+    questions = data_manager.collect_questions()
+    return render_template('all_question.html', questions=questions)
 
 
 @app.route('/question_page/<question_id>/vote')

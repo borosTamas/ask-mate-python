@@ -2,14 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Index</title>
+    <title>All Question</title>
 </head>
 <body>
-<h1>ASK MATE</h1>
-<a href="/add-question">Add new Question</a>
-<a href="/all_question">Show All Question</a>
-<h2>LATEST 5 QUESTION:</h2>
-
+<h1>All Question</h1>
 <table>
     <tbody>
     {% for question in questions%}
@@ -19,6 +15,6 @@
         {% endfor %}
     </tr>
     </tbody>
-</table><br>
+</table>
 </body>
 </html>

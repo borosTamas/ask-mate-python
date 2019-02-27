@@ -18,6 +18,15 @@ def collect_questions(cursor):
     result = cursor.fetchall()
     return result
 
+@connection.connection_handler
+def collect_latest_5_question(cursor):
+    cursor.execute("""
+    SELECT * FROM question
+    ORDER BY submission_time DESC 
+    LIMIT 5""")
+    result = cursor.fetchall()
+    return result
+
 
 @connection.connection_handler
 def find_question(cursor, q_id):
