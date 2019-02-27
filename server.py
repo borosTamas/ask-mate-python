@@ -16,8 +16,21 @@ def show_all_question():
     return render_template('all_question.html', questions=questions)
 
 
-@app.route('/question_page/vote',methods=['GET','POST'])
+@app.route('/question_page/<question_id>/vote')
 def vote():
+    vote = 0
+    if vote_ud == 'up':
+        vote += 1
+    if vote_ud == 'down':
+        vote -= 1
+    data_manager.update_vote_number(vote=vote, q_id=question_id)
+    return redirect('/question_page/<question_id>')
+
+
+@app.route('/question_page/<question_id>/delete')
+def delete_question(question_id):
+    data_manager.delete_question(q_id=question_id)
+    return show_all_question()
     vote = int(request.form.get('vote_num'))
     vote_up = request.form.get('vote_up')
     vote_down = request.form.get('vote_down')
@@ -31,12 +44,15 @@ def vote():
         return redirect('/')
 
 
+@app.route('/question_page/<question_id>/<answer_id>/answer-delete')
+def delete_answer(question_id, answer_id):
+    data_manager.delete_answer(q_id=question_id, a_id=answer_id)
+    return show_question(question_id)
+
 @app.route('/search', methods=['POST'])
 def search():
     question_data = request.form.get('question_data')
-    print(question_data)
     result = data_manager.find_searched_questions(searched_data=question_data)
-    print(result)
     return render_template('all_question.html', questions=result)
 
 
