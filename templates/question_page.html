@@ -19,17 +19,16 @@ Image:{{ question[0]['image'] }}<br>
 <a href="{{ url_for('edit_question', question_id=question[0]['id']) }}">edit question</a>
 </form>
 
-
-<a href="{{ url_for('vote',question_id=question[0]['id'], vote_ud="up") }}">
- Vote UP<br></a>
-<a href="{{ url_for('vote', question_id=question[0]['id'], vote_ud="down") }}">
- Vote DOWN<br></a>
-
+<form action="/question_page/{{ question['id'] }}vote" method="post">
+  <input type="radio" name="vote_ud" value="up" checked> Vote UP<br>
+  <input type="radio" name="vote_ud" value="down"> Vote DOWN<br>
+  <input type="submit" value="VOTE">
+</form>
 
 <h2>Answers:</h2>
 {%for answer in answers%}
     {{answer['message']}}
-    <form action="/question_page/{{ answer['id'] }}/update" method="POST">
+    <form action="/question_page/{{ answer['id'] }}/update">
     <a href="{{url_for('edit_answer', answer_id=answer['id'], class="button")}}">edit answer</a>
     </form>
     <br>
