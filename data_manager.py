@@ -10,6 +10,16 @@ ANSWERS_FILE_PATH = os.getenv('ANSWERS_FILE_PATH', 'sample_data/answer.csv')
 
 
 @connection.connection_handler
+def sort_questions(cursor, option, how):
+    option = option
+    cursor.execute("""
+    SELECT * FROM question
+    ORDER BY {option} {how} 
+    """.format(option=option,how=how))
+    result = cursor.fetchall()
+    return result
+
+@connection.connection_handler
 def collect_questions(cursor):
     cursor.execute("""
     SELECT * FROM question

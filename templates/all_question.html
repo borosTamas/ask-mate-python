@@ -5,6 +5,19 @@
     <title>All Question</title>
 </head>
 <body>
+<form action="/all_question/sort" method="post">
+    Sort by:
+<select id="qusetions" name="options">
+      <option value="vote_number">Vote</option>
+      <option value="submission_time">Date</option>
+      <option value="view_number">View</option>
+</select>
+<select id="sort" name="sort_options">
+      <option value="ASC">ASC</option>
+      <option value="DESC">DESC</option>
+</select>
+    <input type="submit" value="sort">
+</form>
 {% include 'home_button.html' %}
 <h1>All Question</h1>
 <table>

@@ -16,21 +16,25 @@ def show_all_question():
     return render_template('all_question.html', questions=questions)
 
 
-@app.route('/question_page/<question_id>/vote')
+
+@app.route('/all_question/sort',methods=['GET', 'POST'])
+def show_all_sorted_question():
+    questions = sort_questions()
+    return render_template('all_question.html', questions=questions)
+
+
+
+def sort_questions():
+    sort_options = request.form.get('sort_options')
+    option = request.form.get('options')
+    result = data_manager.sort_questions(option=option, how=sort_options)
+    return result
+
+
+
+
+@app.route('/question_page/vote',methods=['GET','POST'])
 def vote():
-    vote = 0
-    if vote_ud == 'up':
-        vote += 1
-    if vote_ud == 'down':
-        vote -= 1
-    data_manager.update_vote_number(vote=vote, q_id=question_id)
-    return redirect('/question_page/<question_id>')
-
-
-@app.route('/question_page/<question_id>/delete')
-def delete_question(question_id):
-    data_manager.delete_question(q_id=question_id)
-    return show_all_question()
     vote = int(request.form.get('vote_num'))
     vote_up = request.form.get('vote_up')
     vote_down = request.form.get('vote_down')
