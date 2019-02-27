@@ -76,11 +76,12 @@ def update_view_number(cursor, q_id):
 
 @connection.connection_handler
 def update_vote_number(cursor,vote,q_id):
-    cursor.execute("""UPDATE question
-        set vote_number = vote_number + %(vote)d
-        WHERE question.id = %(q_id)s
+    cursor.execute("""
+        UPDATE question
+        set vote_number = %(vote)s
+        WHERE id = %(q_id)s
     """,
-    {'vote' : vote,'q_id' : q_id})
+            {'vote' : vote,'q_id' : q_id})
 
 @connection.connection_handler
 def collect_answers(cursor, q_id):

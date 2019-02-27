@@ -19,9 +19,12 @@ Image:{{ question[0]['image'] }}<br>
 <a href="{{ url_for('edit_question', question_id=question[0]['id']) }}">edit question</a>
 </form>
 
-<form action="/question_page/{{ question['id'] }}vote" method="post">
-  <input type="radio" name="vote_ud" value="up" checked> Vote UP<br>
-  <input type="radio" name="vote_ud" value="down"> Vote DOWN<br>
+
+<form action="/question_page/vote" method="post">
+    <input type="hidden" name = "q_id" value="{{ question[0]['id'] }}">
+    <input type="hidden" name = "vote_num" value="{{ question[0]['vote_number'] }}">
+  <input type="radio" name="vote_up" value="up"> Vote UP<br>
+  <input type="radio" name="vote_down" value="down"> Vote DOWN<br>
   <input type="submit" value="VOTE">
 </form>
 
