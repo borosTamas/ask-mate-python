@@ -3,19 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <title>Index</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
 </head>
 <body>
-
+<div id="search">
 <form action="/search" method='POST'>
     <input type="text" name="question_data" value="" required>
     <button type="submit">Search</button>
 </form>
-
+</div>
 <h1>ASK MATE</h1>
 <a href="/add-question">Add new Question</a>
 <a href="/all_question">Show All Question</a>
 <h2>LATEST 5 QUESTION:</h2>
-
 <table>
 <thead>
 <th>Title</th>

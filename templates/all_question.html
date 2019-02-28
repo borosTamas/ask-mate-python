@@ -3,8 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <title>All Question</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
 </head>
 <body>
+
+{% include 'home_button.html' %}
+<h1>ALL QUESTION</h1>
 <form action="/all_question/sort" method="post">
     Sort by:
 <select id="qusetions" name="options">
@@ -18,8 +22,6 @@
 </select>
     <input type="submit" value="sort">
 </form>
-{% include 'home_button.html' %}
-<h1>All Question</h1>
 <table>
     <tbody>
     {% for question in questions%}

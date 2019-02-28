@@ -3,11 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <title> {{ question['title'] }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
 </head>
 <body>
 <div id="Home_button">{% include 'home_button.html' %}</div>
 <br>
 <div id="data">
+<h1>{{ question[0]['title'] }}</h1>
 ID :{{ question[0]['id'] }}<br>
 Submission Time: {{ question[0]['submission_time'] }}<br>
 View Number: {{ question[0]['view_number'] }}<br>
@@ -16,6 +18,7 @@ Vote Number: {{ question[0]['vote_number'] }}<br>
 <div id="main_data>">
 Title: {{ question[0]['title'] }}<br>
 Message: <textarea>{{ question[0]['message'] }}</textarea><br>
+Message:{{ question[0]['message'] }}<br>
 Image:{{ question[0]['image'] }}<br>
 </div>
 
