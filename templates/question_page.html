@@ -12,7 +12,7 @@ Submission Time: {{ question[0]['submission_time'] }}<br>
 View Number: {{ question[0]['view_number'] }}<br>
 Vote Number: {{ question[0]['vote_number'] }}<br>
 Title: {{ question[0]['title'] }}<br>
-Message:{{ question[0]['message'] }}<br>
+Message: <textarea>{{ question[0]['message'] }}</textarea><br>
 Image:{{ question[0]['image'] }}<br>
 
 <form action="/question_page/{{ question['id'] }}/edit" method="POST">
