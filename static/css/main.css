@@ -1,0 +1,33 @@
+body {
+    background-image: url("background.jpg");
+    color:white;
+    }
+
+.button {
+    background-color: #555555;
+    border: none;
+    color: white;
+    padding: 10px 24px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 20px;
+    border-radius: 4px;
+}
+
+.backgroundColor {
+        color: white;
+        padding: middle;
+        text-align: center;
+    }
+
+h1 {
+    color: white;
+    text-align: center;
+    letter-spacing: 3px;
+    word-spacing: 8px;
+    text-shadow: 3px 2px black;
+    }
+
+
+
