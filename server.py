@@ -106,7 +106,7 @@ def rewrite_question():
         'image': request.form.get('image')
     }
     data_manager.update_question(datas=updated_question)
-    return redirect('/')
+    return show_question(updated_question['id'])
 
 
 @app.route('/question_page/<question_id>/new-answer', methods=['GET','POST'])
@@ -148,7 +148,7 @@ def rewrite_answer():
         'image': request.form.get('image'),
     }
     data_manager.update_answer(datas=updated_answer)
-    return redirect('/')
+    return show_question(updated_answer['question_id'])
 
 
 @app.route('/add-question', methods=['GET', 'POST'])

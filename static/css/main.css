@@ -3,29 +3,32 @@ body {
     color:white;
     }
 #main_data {
-    max-width: fit-content;
+    background-color: rgb(232,232,232,0.2);
+    width: 400px;
     position: center;
-    background-color: lightgray;
 }
 #data{
     position: relative;
     margin-right: fill;
     float: right;
-    background-color: lightgray;
-    backface-visibility: initial;
+    width: 400px;
+    backrgb(232,232,232)ground-color: lightgray;
 }
 #answer{
+    width: 400px;
     position: center;
     float: bottom;
-    background-color: lightgray;
+    background-color: rgb(232,232,232,0.2)
 }
 #question_comment{
-    background-color: darkgray ;
+    width: 400px;
+    background-color: rgb(232,232,232,0.2) ;
     color: black;
     font-max-size: small;
 }
 #answer_comment{
-    background-color: darkgray ;
+    width: 400px;
+    background-color: rgb(232,232,232,0.2);
     color: black;
     font-max-size: small;
 }

@@ -38,7 +38,7 @@ def delete_question(cursor, q_id):
     delete from answer
     where question_id = %(q_id)s;  
     delete from question
-    where id = %(q_id)s   
+    where id = %(q_id)s 
     """,
                    {'q_id': q_id})
 
