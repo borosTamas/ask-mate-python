@@ -78,7 +78,6 @@ def search():
 def show_question(question_id):
     question = data_manager.find_question(q_id=question_id)
     answers = data_manager.collect_answers(q_id=question_id)
-    print(answers)
     data_manager.update_view_number(q_id=question_id)
     comment = data_manager.collect_comment_to_question(q_id=question_id)
     answer_comment = []
@@ -86,7 +85,6 @@ def show_question(question_id):
         temporary = data_manager.collect_comment_to_answer(a_id=answer['id'])
         if len(temporary)>0:
             answer_comment.append(temporary[0])
-    print(answer_comment)
     return render_template('question_page.html', question=question, answers=answers, comment=comment, answer_comment=answer_comment)
 
 

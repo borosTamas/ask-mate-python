@@ -2,7 +2,33 @@ body {
     background-image: url("background.jpg");
     color:white;
     }
-
+#main_data {
+    max-width: fit-content;
+    position: center;
+    background-color: lightgray;
+}
+#data{
+    position: relative;
+    margin-right: fill;
+    float: right;
+    background-color: lightgray;
+    backface-visibility: initial;
+}
+#answer{
+    position: center;
+    float: bottom;
+    background-color: lightgray;
+}
+#question_comment{
+    background-color: darkgray ;
+    color: black;
+    font-max-size: small;
+}
+#answer_comment{
+    background-color: darkgray ;
+    color: black;
+    font-max-size: small;
+}
 .button {
     background-color: #555555;
     border: none;
