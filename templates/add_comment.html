@@ -6,10 +6,20 @@
 </head>
 <body>
 <h1> Add Comment</h1>
-<form action="{{ url_for('add_comment', question_id=question_id)}}" method="post">
-   Comment: <br>
-    <textarea type="text" rows="10" cols="40" name="message"></textarea><br>
-    <input type="submit" value="Add Comment">
+{% if comment == 'question' %}
+    <form action="{{ url_for('add_comment_to_question', question_id=question_id)}}" method="post">
+        Comment: <br>
+        <textarea type="text" rows="10" cols="40" name="message"></textarea><br>
+        <input type="hidden" value="{{ question_id }}">
+        <input type="submit" value="Add Comment">
+{% elif comment == 'answer' %}
+    <form action="{{ url_for('add_comment_to_answer', answer_id=answer_id, question_id=question_id)}}" method="post">
+        Comment: <br>
+        <textarea type="text" rows="10" cols="40" name="message"></textarea><br>
+        <input type="hidden" value="{{ question_id }}">
+        <input type="hidden" value="{{ answer_id }}">
+        <input type="submit" value="Add Comment">
+{%  endif %}
 </form>
 </body>
 </html>

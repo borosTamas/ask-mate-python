@@ -79,9 +79,13 @@ def show_question(question_id):
     answers = data_manager.collect_answers(q_id=question_id)
     print(answers)
     data_manager.update_view_number(q_id=question_id)
-    comment = data_manager.collect_comment(q_id=question_id)
+    comment = data_manager.collect_comment_to_question(q_id=question_id)
     print(comment)
-    return render_template('question_page.html', question=question, answers=answers, comment=comment)
+    answer_comment = []
+    for answer in answers:
+        answer_comment.append(data_manager.collect_comment_to_answer(a_id= answer['id']))
+    print(answer_comment)
+    return render_template('question_page.html', question=question, answers=answers, comment=comment, answer_comment=answer_comment)
 
 
 
@@ -171,12 +175,24 @@ def create_question(message, image, title):
 
 
 @app.route('/question_page/<question_id>/comment', methods=['GET','POST'])
-def add_comment(question_id):
-    if request.method=='POST':
+def add_comment_to_question(question_id):
+    comment = 'question'
+    if request.method == 'POST':
         message = request.form['message']
-        data_manager.add_comment_to_question(q_id=question_id, comment_message=message)
+        data_manager.add_comment_to_question(q_id=question_id, comment_message=message, comment=comment)
+
         return show_question(question_id)
     return render_template('add_comment.html', question_id=question_id)
+
+
+@app.route('/question_page/<question_id>/<answer_id>/comment', methods=['GET','POST'])
+def add_comment_to_answer(answer_id,question_id):
+    comment = 'answer'
+    if request.method == 'POST':
+        message = request.form['message']
+        data_manager.add_comment_to_answer(a_id=answer_id, comment_message=message)
+        return show_question(question_id)
+    return render_template('add_comment.html', answer_id=answer_id, question_id=question_id, comment=comment)
 
 
 if __name__ == "__main__":

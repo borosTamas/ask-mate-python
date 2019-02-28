@@ -183,12 +183,32 @@ def add_comment_to_question(cursor, q_id, comment_message):
 
 
 @connection.connection_handler
-def collect_comment(cursor, q_id):
+def add_comment_to_answer(cursor, a_id, comment_message):
+    cursor.execute("""
+                    insert into comment(answer_id, message)
+                    values (%(a_id)s,%(comment_message)s)
+
+    """,
+                   {'a_id': a_id,  'comment_message': comment_message})
+
+
+@connection.connection_handler
+def collect_comment_to_question(cursor, q_id):
     cursor.execute("""
                     Select message from comment
                     where question_id = %(q_id)s
     """,
                    {'q_id': q_id})
+    result = cursor.fetchall()
+    return result
+
+@connection.connection_handler
+def collect_comment_to_answer(cursor, a_id):
+    cursor.execute("""
+                    Select message, answer_id from comment
+                    where answer_id = %(a_id)s
+    """,
+                   {'a_id': a_id})
     result = cursor.fetchall()
     return result
 
