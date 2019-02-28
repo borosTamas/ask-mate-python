@@ -24,15 +24,18 @@
 <th>Vote Number</th>
 </thead>
     <tbody>
+    <p></p>
+    <p></p>
     {% for question in questions %}
         <tr>
-        <td><a href=" {{ url_for('show_question', question_id=question['id']) }}">
+        <td><a href=" {{ url_for('show_question', question_id=question['id']) }}"><br>
             {{ question['title'] }} </a></td>
         <td>{{ question['submission_time'] }}</td>
         <td>{{ question['view_number'] }}</td>
         <td>{{ question['vote_number'] }}</td>
     {% endfor %}
     </tr>
+
     </tbody>
 </table>
 <br>
