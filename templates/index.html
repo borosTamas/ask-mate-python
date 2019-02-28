@@ -17,15 +17,24 @@
 <h2>LATEST 5 QUESTION:</h2>
 
 <table>
-
+<thead>
+<th>Title</th>
+<th>Submission Time</th>
+<th>View Number</th>
+<th>Vote Number</th>
+</thead>
     <tbody>
     {% for question in questions %}
         <tr>
         <td><a href=" {{ url_for('show_question', question_id=question['id']) }}">
-            {{ question['title'] }}</a></td>
+            {{ question['title'] }} </a></td>
+        <td>{{ question['submission_time'] }}</td>
+        <td>{{ question['view_number'] }}</td>
+        <td>{{ question['vote_number'] }}</td>
     {% endfor %}
     </tr>
     </tbody>
-</table><br>
+</table>
+<br>
 </body>
 </html>

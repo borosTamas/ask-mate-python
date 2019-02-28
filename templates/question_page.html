@@ -16,43 +16,45 @@ Message:{{ question[0]['message'] }}<br>
 Image:{{ question[0]['image'] }}<br>
 
 <form action="/question_page/{{ question['id'] }}/edit" method="POST">
-<a href="{{ url_for('edit_question', question_id=question[0]['id']) }}">edit question</a>
+    <a href="{{ url_for('edit_question', question_id=question[0]['id']) }}">edit question</a>
 </form>
 
-<a href="{{ url_for('delete_question',question_id = question[0]['id'])}}"> Delete question</a> <br>
+<a href="{{ url_for('delete_question',question_id = question[0]['id']) }}"> Delete question</a> <br>
 
 <h2>Comments</h2>
-{% for message in comment%}
-    {{ message['message']}} <br>
+{% for message in comment %}
+    {{ message['message'] }} <br>
 {% endfor %}
 
-<a href="{{ url_for('add_comment_to_question', question_id = question[0]['id'] )}}">Add Comment</a>
+<a href="{{ url_for('add_comment_to_question', question_id = question[0]['id'] ) }}">Add Comment</a>
 
 <form action="/question_page/vote" method="post">
-    <input type="hidden" name = "q_id" value="{{ question[0]['id'] }}">
-    <input type="hidden" name = "vote_num" value="{{ question[0]['vote_number'] }}">
-  <input type="radio" name="vote_up" value="up"> Vote UP<br>
-  <input type="radio" name="vote_down" value="down"> Vote DOWN<br>
-  <input type="submit" value="VOTE">
+    <input type="hidden" name="q_id" value="{{ question[0]['id'] }}">
+    <input type="hidden" name="vote_num" value="{{ question[0]['vote_number'] }}">
+    <input type="radio" name="vote_up" value="up"> Vote UP<br>
+    <input type="radio" name="vote_down" value="down"> Vote DOWN<br>
+    <input type="submit" value="VOTE">
 </form>
 
 <h2>Answers:</h2>
-{%for answer in answers%}
-    {{answer['message']}}<br>
-    comments:
+{% for answer in answers %}
+    {{ answer['message'] }}<br>
+    comments:<br>
     {% for comment in answer_comment %}
-        {% if comment['answer_id'] == answer['id']  %}
-            {{ comment['message'] }}
+        {% if comment['answer_id'] == answer['id'] %}
+            {{ comment['message'] }}<br>
         {% endif %}
     {% endfor %}
     <form action="/question_page/{{ answer['id'] }}/update">
-    <a href="{{ url_for('add_comment_to_answer', answer_id = answer['id'], question_id = question[0]['id'] )}}">Add Comment</a>
-    <a href="{{url_for('edit_answer', answer_id=answer['id'], class="button")}}">edit answer</a>
-    </form> <a href="{{ url_for('delete_answer', question_id=question[0]['id'], answer_id=answer['id'])}}"> delete answer</a>
+        <a href="{{ url_for('add_comment_to_answer', answer_id = answer['id'], question_id = question[0]['id'] ) }}">Add
+            Comment</a>
+        <a href="{{ url_for('edit_answer', answer_id=answer['id'], class="button") }}">edit answer</a>
+    </form>
+    <a href="{{ url_for('delete_answer', question_id=question[0]['id'], answer_id=answer['id']) }}"> delete answer</a>
     <br><br>
-{%endfor%}
+{% endfor %}
 <form action="/question_page/{{ question['id'] }}/new-answer" method="POST">
-    <a href="{{url_for('post_an_answer',question_id=question[0]['id'], class="button")}}">Post an Answer</a>
+    <a href="{{ url_for('post_an_answer',question_id=question[0]['id'], class="button") }}">Post an Answer</a>
 </form>
 </body>
 </html>

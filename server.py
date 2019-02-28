@@ -22,7 +22,6 @@ def show_all_sorted_question():
     return render_template('all_question.html', questions=questions)
 
 
-
 def sort_questions():
     sort_options = request.form.get('sort_options')
     option = request.form.get('options')
@@ -61,10 +60,12 @@ def delete_question(question_id):
         data_manager.update_vote_number(vote=vote, q_id=q_id)
         return redirect('/')
 
+
 @app.route('/question_page/<question_id>/<answer_id>/answer-delete')
 def delete_answer(question_id, answer_id):
     data_manager.delete_answer(q_id=question_id, a_id=answer_id)
     return show_question(question_id)
+
 
 @app.route('/search', methods=['POST'])
 def search():
@@ -83,10 +84,10 @@ def show_question(question_id):
     print(comment)
     answer_comment = []
     for answer in answers:
-        answer_comment.append(data_manager.collect_comment_to_answer(a_id= answer['id']))
-    print(answer_comment)
-    return render_template('question_page.html', question=question, answers=answers, comment=comment, answer_comment=answer_comment)
-
+        print(answer['id'])
+        answer_comment.append(data_manager.collect_comment_to_answer(a_id=answer['id']))
+    print(answer_comment[0])
+    return render_template('question_page.html', question=question, answers=answers, comment=comment, answer_comment=answer_comment[0])
 
 
 @app.route('/question_page/<question_id>/edit')
@@ -179,14 +180,14 @@ def add_comment_to_question(question_id):
     comment = 'question'
     if request.method == 'POST':
         message = request.form['message']
-        data_manager.add_comment_to_question(q_id=question_id, comment_message=message, comment=comment)
+        data_manager.add_comment_to_question(q_id=question_id, comment_message=message)
 
         return show_question(question_id)
-    return render_template('add_comment.html', question_id=question_id)
+    return render_template('add_comment.html', question_id=question_id, comment=comment)
 
 
 @app.route('/question_page/<question_id>/<answer_id>/comment', methods=['GET','POST'])
-def add_comment_to_answer(answer_id,question_id):
+def add_comment_to_answer(answer_id, question_id):
     comment = 'answer'
     if request.method == 'POST':
         message = request.form['message']
