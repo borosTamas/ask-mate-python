@@ -81,13 +81,13 @@ def show_question(question_id):
     print(answers)
     data_manager.update_view_number(q_id=question_id)
     comment = data_manager.collect_comment_to_question(q_id=question_id)
-    print(comment)
     answer_comment = []
     for answer in answers:
-        print(answer['id'])
-        answer_comment.append(data_manager.collect_comment_to_answer(a_id=answer['id']))
-    print(answer_comment[0])
-    return render_template('question_page.html', question=question, answers=answers, comment=comment, answer_comment=answer_comment[0])
+        temporary = data_manager.collect_comment_to_answer(a_id=answer['id'])
+        if len(temporary)>0:
+            answer_comment.append(temporary[0])
+    print(answer_comment)
+    return render_template('question_page.html', question=question, answers=answers, comment=comment, answer_comment=answer_comment)
 
 
 @app.route('/question_page/<question_id>/edit')

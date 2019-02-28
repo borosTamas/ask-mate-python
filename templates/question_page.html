@@ -7,13 +7,17 @@
 <body>
 <div id="Home_button">{% include 'home_button.html' %}</div>
 <br>
+<div id="data">
 ID :{{ question[0]['id'] }}<br>
 Submission Time: {{ question[0]['submission_time'] }}<br>
 View Number: {{ question[0]['view_number'] }}<br>
 Vote Number: {{ question[0]['vote_number'] }}<br>
+</div>
+<div id="main_data>">
 Title: {{ question[0]['title'] }}<br>
 Message: <textarea>{{ question[0]['message'] }}</textarea><br>
 Image:{{ question[0]['image'] }}<br>
+</div>
 
 <form action="/question_page/{{ question['id'] }}/edit" method="POST">
     <a href="{{ url_for('edit_question', question_id=question[0]['id']) }}">edit question</a>
@@ -23,7 +27,7 @@ Image:{{ question[0]['image'] }}<br>
 
 <h2>Comments</h2>
 {% for message in comment %}
-    {{ message['message'] }} <br>
+   <div id="question_comment"> {{ message['message'] }} </div> <br>
 {% endfor %}
 
 <a href="{{ url_for('add_comment_to_question', question_id = question[0]['id'] ) }}">Add Comment</a>
@@ -38,11 +42,11 @@ Image:{{ question[0]['image'] }}<br>
 
 <h2>Answers:</h2>
 {% for answer in answers %}
-    {{ answer['message'] }}<br>
+    <div id ="answer">{{ answer['message'] }}</div><br>
     comments:<br>
     {% for comment in answer_comment %}
         {% if comment['answer_id'] == answer['id'] %}
-            {{ comment['message'] }}<br>
+            <div id="ansver_comment">{{ comment['message'] }}</div> <br>
         {% endif %}
     {% endfor %}
     <form action="/question_page/{{ answer['id'] }}/update">
