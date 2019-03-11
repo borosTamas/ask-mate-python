@@ -1,6 +1,6 @@
 body {
     background-image: url("background.jpg");
-    color:white;
+    color:black;
     }
 #main_data {
     background-color: rgb(232,232,232,0.2);
@@ -18,8 +18,10 @@ body {
     width: 400px;
     position: center;
     float: bottom;
-    background-color: rgb(232,232,232,0.2)
+    background-color: rgb(232,232,232,0.2);
+    border-radius: 5px;
 }
+
 #question_comment{
     width: 400px;
     background-color: rgb(232,232,232,0.2) ;
@@ -47,29 +49,36 @@ body {
 
 
 h1 {
-    color: white;
+    color: black;
     text-align: center;
     letter-spacing: 3px;
     word-spacing: 8px;
-    text-shadow: 3px 2px black;
+    text-shadow: 3px 2px gray;
     }
 
 h2 {
-    color: white;
-    text-shadow: 3px 2px black;
+    color: black;
+    text-shadow: 3px 2px gray;
 }
 thead {
-        color: white;
-    text-shadow: 3px 2px black;
+        color: black;
+    text-shadow: 3px 2px gray;
 }
 #title_Color {
-    color: white;
-    text-shadow: 3px 2px white;
+    color: black;
+    text-shadow: 3px 2px gray;
 }
 
 p.thicker {
   font-weight: 900;
 }
+
+
+textarea{
+    background-color: darkkhaki;
+    border-radius: 5px;
+}
+
 
 
 
