@@ -1,46 +1,6 @@
 import os
-import time, datetime
+import datetime
 import connection
-
-ANSWERS_HEADER = ['id', 'submission_time', 'vote_number', 'question_id', 'message', 'image']
-DATA_HEADER = ['id', 'submission_time', 'view_number', 'vote_number', 'title', 'message', 'image']
-
-QUESTIONS_FILE_PATH = os.getenv('QUESTIONS_FILE_PATH', 'sample_data/question.csv')
-ANSWERS_FILE_PATH = os.getenv('ANSWERS_FILE_PATH', 'sample_data/answer.csv')
-
-
-@connection.connection_handler
-def sort_questions(cursor, option, how):
-    option = option
-    cursor.execute("""
-    SELECT * FROM question
-    ORDER BY {option} {how} 
-    """.format(option=option,how=how))
-    result = cursor.fetchall()
-    return result
-
-@connection.connection_handler
-def collect_questions(cursor):
-    cursor.execute("""
-    SELECT * FROM question
-    """)
-    result = cursor.fetchall()
-    return result
-
-
-@connection.connection_handler
-def delete_question(cursor, q_id):
-    cursor.execute("""
-    delete from question_tag
-    where question_id = %(q_id)s;
-    delete from comment
-    where question_id = %(q_id)s;
-    delete from answer
-    where question_id = %(q_id)s;  
-    delete from question
-    where id = %(q_id)s 
-    """,
-                   {'q_id': q_id})
 
 
 @connection.connection_handler
@@ -52,41 +12,6 @@ def delete_answer(cursor, q_id, a_id):
     where question_id = %(q_id)s and id  = %(a_id)s
     """,
                    {'q_id': q_id, 'a_id': a_id})
-
-
-@connection.connection_handler
-def find_searched_questions(cursor, searched_data):
-    searched_data = "%" + searched_data + "%"
-    cursor.execute("""
-    select * from question
-    where title  ilike %(searched_data)s
-    OR 
-    message ilike %(searched_data)s
-    """,
-                   {'searched_data': searched_data})
-    result = cursor.fetchall()
-    return result
-
-
-@connection.connection_handler
-def collect_latest_5_question(cursor):
-    cursor.execute("""
-    SELECT * FROM question
-    ORDER BY submission_time DESC 
-    LIMIT 5""")
-    result = cursor.fetchall()
-    return result
-
-
-@connection.connection_handler
-def find_question(cursor, q_id):
-    cursor.execute("""
-    SELECT * from question
-    where id = %(q_id)s
-    """,
-                   {'q_id': q_id})
-    result = cursor.fetchall()
-    return result
 
 
 @connection.connection_handler
@@ -119,15 +44,6 @@ def collect_answers(cursor, q_id):
 
     result = cursor.fetchall()
     return result
-
-
-@connection.connection_handler
-def update_question(cursor, datas):
-    cursor.execute("""
-                    UPDATE question 
-                    SET title=%s, message=%s, image=%s
-                    WHERE id=%s""",
-                   (datas['title'], datas['message'], datas['image'], int(datas['id'])))
 
 
 @connection.connection_handler
@@ -214,12 +130,4 @@ def collect_comment_to_answer(cursor, a_id):
     return result
 
 
-@connection.connection_handler
-def add_question(cursor, from_data):
-    cursor.execute("""
-                    INSERT INTO question(submission_time, view_number, vote_number, title, message, image)
-                    VALUES (%s,%s,%s, %s,%s,%s)""",
-                   (
-                       from_data['submission_time'], from_data['view_number'], from_data['vote_number'],
-                       from_data['title'],
-                       from_data['message'], from_data['image']))
+

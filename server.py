@@ -1,18 +1,20 @@
 from flask import Flask, render_template, request, redirect
+import question_data_manager
 import data_manager
+import answer_data_manager
 
 app = Flask(__name__)
 
 
 @app.route('/')
 def render_index():
-    questions = data_manager.collect_latest_5_question()
+    questions = question_data_manager.collect_latest_5_question()
     return render_template('index.html', questions=questions)
 
 
 @app.route('/all_question')
 def show_all_question():
-    questions = data_manager.collect_questions()
+    questions = question_data_manager.collect_questions()
     return render_template('all_question.html', questions=questions)
 
 
@@ -25,7 +27,7 @@ def show_all_sorted_question():
 def sort_questions():
     sort_options = request.form.get('sort_options')
     option = request.form.get('options')
-    result = data_manager.sort_questions(option=option, how=sort_options)
+    result = question_data_manager.sort_questions(option=option, how=sort_options)
     return result
 
 
@@ -46,7 +48,7 @@ def vote():
 
 @app.route('/question_page/<question_id>/delete')
 def delete_question(question_id):
-    data_manager.delete_question(q_id=question_id)
+    question_data_manager.delete_question(q_id=question_id)
     return show_all_question()
     vote = int(request.form.get('vote_num'))
     vote_up = request.form.get('vote_up')
@@ -63,20 +65,20 @@ def delete_question(question_id):
 
 @app.route('/question_page/<question_id>/<answer_id>/answer-delete')
 def delete_answer(question_id, answer_id):
-    data_manager.delete_answer(q_id=question_id, a_id=answer_id)
+    answer_data_manager.delete_answer(q_id=question_id, a_id=answer_id)
     return show_question(question_id)
 
 
 @app.route('/search', methods=['POST'])
 def search():
     question_data = request.form.get('question_data')
-    result = data_manager.find_searched_questions(searched_data=question_data)
+    result = question_data_manager.find_searched_questions(searched_data=question_data)
     return render_template('all_question.html', questions=result)
 
 
 @app.route('/question_page/<question_id>')
 def show_question(question_id):
-    question = data_manager.find_question(q_id=question_id)
+    question = question_data_manager.find_question(q_id=question_id)
     answers = data_manager.collect_answers(q_id=question_id)
     data_manager.update_view_number(q_id=question_id)
     comment = data_manager.collect_comment_to_question(q_id=question_id)
@@ -92,7 +94,7 @@ def show_question(question_id):
 
 @app.route('/question_page/<question_id>/edit')
 def edit_question(question_id):
-    result = data_manager.find_question(q_id=question_id)
+    result = question_data_manager.find_question(q_id=question_id)
     return render_template('add_question.html', result=result)
 
 
@@ -107,7 +109,7 @@ def rewrite_question():
         'message': request.form.get('message'),
         'image': request.form.get('image')
     }
-    data_manager.update_question(datas=updated_question)
+    question_data_manager.update_question(datas=updated_question)
     return show_question(updated_question['id'])
 
 
@@ -117,9 +119,9 @@ def post_an_answer(question_id):
     message = ""
     if request.method=='POST':
         new_answer = create_answer(question_id, request.form['message'], request.form['image'])
-        data_manager.add_answer(form_data=new_answer)
+        answer_data_manager.add_answer(form_data=new_answer)
         return redirect('/')
-    question = data_manager.find_question(question_id)
+    question = question_data_manager.find_question(question_id)
     return render_template('new_answer.html', question=question, result=result, message=message)
 
 
@@ -135,7 +137,7 @@ def create_answer(question_id, message, image):
 
 @app.route('/question_page/<answer_id>/update')
 def edit_answer(answer_id):
-    result = data_manager.find_answer(a_id=answer_id)
+    result = answer_data_manager.find_answer(a_id=answer_id)
     return render_template('new_answer.html', result=result)
 
 
@@ -149,7 +151,7 @@ def rewrite_answer():
         'message': request.form.get('message'),
         'image': request.form.get('image'),
     }
-    data_manager.update_answer(datas=updated_answer)
+    answer_data_manager.update_answer(datas=updated_answer)
     return show_question(updated_answer['question_id'])
 
 
@@ -159,7 +161,7 @@ def add_question():
     message = ""
     if request.method == 'POST':
         new_question = create_question(request.form['message'], request.form['image'], request.form['title'])
-        data_manager.add_question(from_data=new_question)
+        question_data_manager.add_question(from_data=new_question)
         return redirect('/')
     return render_template('add_question.html', result=result, message=message)
 

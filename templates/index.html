@@ -25,7 +25,7 @@
     <p></p>
     {% for question in questions %}
         <tr>
-        <td><a href=" {{ url_for('show_question', question_id=question['id']) }}"><br>
+        <td><a href=" {{ url_for('show_question', question_id=question['id']) }}">
             {{ question['title'] }} </a></td>
         <td>{{ question['submission_time'] }}</td>
         <td>{{ question['view_number'] }}</td>
