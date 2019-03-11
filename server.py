@@ -83,9 +83,11 @@ def show_question(question_id):
     answer_comment = []
     for answer in answers:
         temporary = data_manager.collect_comment_to_answer(a_id=answer['id'])
-        if len(temporary)>0:
-            answer_comment.append(temporary[0])
-    return render_template('question_page.html', question=question, answers=answers, comment=comment, answer_comment=answer_comment)
+        if len(temporary) > 0:
+            answer_comment.append(temporary)
+    if len(answer_comment) <= 0:
+        answer_comment = [None]
+    return render_template('question_page.html', question=question, answers=answers, comment=comment, answer_comment=answer_comment[0])
 
 
 @app.route('/question_page/<question_id>/edit')
