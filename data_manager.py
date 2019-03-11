@@ -1,5 +1,5 @@
 import os
-import time, datetime
+import datetime
 import connection
 
 ANSWERS_HEADER = ['id', 'submission_time', 'vote_number', 'question_id', 'message', 'image']
