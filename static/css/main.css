@@ -2,11 +2,13 @@ body {
     background-image: url("background.jpg");
     color:black;
     }
+
 #main_data {
     background-color: rgb(232,232,232,0.2);
     width: 400px;
     position: center;
 }
+
 #data{
     position: relative;
     margin-right: fill;
@@ -14,6 +16,7 @@ body {
     width: 400px;
     backrgb(232,232,232)ground-color: lightgray;
 }
+
 #answer{
     width: 400px;
     position: center;
@@ -28,12 +31,14 @@ body {
     color: black;
     font-max-size: small;
 }
+
 #answer_comment{
     width: 400px;
     background-color: rgb(232,232,232,0.2);
     color: black;
     font-max-size: small;
 }
+
 .button {
     background-color: #555555;
     border: none;
@@ -60,10 +65,12 @@ h2 {
     color: black;
     text-shadow: 3px 2px gray;
 }
+
 thead {
         color: black;
     text-shadow: 3px 2px gray;
 }
+
 #title_Color {
     color: black;
     text-shadow: 3px 2px gray;
@@ -78,7 +85,4 @@ textarea{
     background-color: darkkhaki;
     border-radius: 5px;
 }
-
-
-
 
