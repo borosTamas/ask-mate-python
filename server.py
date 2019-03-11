@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect
 import question_data_manager
 import data_manager
+import answer_data_manager
 
 app = Flask(__name__)
 
@@ -64,7 +65,7 @@ def delete_question(question_id):
 
 @app.route('/question_page/<question_id>/<answer_id>/answer-delete')
 def delete_answer(question_id, answer_id):
-    data_manager.delete_answer(q_id=question_id, a_id=answer_id)
+    answer_data_manager.delete_answer(q_id=question_id, a_id=answer_id)
     return show_question(question_id)
 
 
@@ -116,7 +117,7 @@ def post_an_answer(question_id):
     message = ""
     if request.method=='POST':
         new_answer = create_answer(question_id, request.form['message'], request.form['image'])
-        data_manager.add_answer(form_data=new_answer)
+        answer_data_manager.add_answer(form_data=new_answer)
         return redirect('/')
     question = question_data_manager.find_question(question_id)
     return render_template('new_answer.html', question=question, result=result, message=message)
@@ -134,7 +135,7 @@ def create_answer(question_id, message, image):
 
 @app.route('/question_page/<answer_id>/update')
 def edit_answer(answer_id):
-    result = data_manager.find_answer(a_id=answer_id)
+    result = answer_data_manager.find_answer(a_id=answer_id)
     return render_template('new_answer.html', result=result)
 
 
@@ -148,7 +149,7 @@ def rewrite_answer():
         'message': request.form.get('message'),
         'image': request.form.get('image'),
     }
-    data_manager.update_answer(datas=updated_answer)
+    answer_data_manager.update_answer(datas=updated_answer)
     return show_question(updated_answer['question_id'])
 
 
