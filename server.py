@@ -100,7 +100,7 @@ def show_question(question_id):
     comment = comment_data_manager.collect_comment_to_question(q_id=question_id)
     answer_comment = []
     for answer in answers:
-        temporary = data_manager.collect_comment_to_answer(a_id=answer['id'])
+        temporary = comment_data_manager.collect_comment_to_answer(a_id=answer['id'])
         if len(temporary) > 0:
             answer_comment.append(temporary)
     if len(answer_comment) <= 0:
