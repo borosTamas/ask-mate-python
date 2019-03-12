@@ -21,8 +21,6 @@
 <th>Vote Number</th>
 </thead>
     <tbody>
-    <p></p>
-    <p></p>
     {% for question in questions %}
         <tr>
         <td><a href=" {{ url_for('show_question', question_id=question['id']) }}">
