@@ -28,24 +28,32 @@ Image:{{ question[0]['image'] }}<br>
 
 <button><a href="{{ url_for('delete_question',question_id = question[0]['id']) }}"> Delete question</a></button> <br>
 
-<h2>Comments</h2>
+<h2>Comments:</h2>
 {% for message in comment %}
    <div id="question_comment"> {{ message['message'] }} </div> <br>
 {% endfor %}
 
 <button><a href="{{ url_for('add_comment_to_question', question_id = question[0]['id'] ) }}">Add Comment</a></button>
 
-<form action="/question_page/vote" method="post">
+<form action="/question_page/vote_question" method="post">
     <input type="hidden" name="q_id" value="{{ question[0]['id'] }}">
     <input type="hidden" name="vote_num" value="{{ question[0]['vote_number'] }}">
-    <input type="radio" name="vote_up" value="up"> Vote UP<br>
-    <input type="radio" name="vote_down" value="down"> Vote DOWN<br>
+    <input type="radio" name="vote_up" value="up"> Vote Up Question<br>
+    <input type="radio" name="vote_down" value="down"> Vote Down Question<br>
     <input type="submit" value="VOTE">
 </form>
 
 <h2>Answers:</h2>
 {% for answer in answers %}
     <div id ="answer">{{ answer['message'] }}</div><br>
+    <p>Vote Number: {{ answer['vote_number'] }}</p>
+    <form action="/question_page/vote_answer" method="post">
+        <input type="hidden" name="a_id" value="{{ answer['id'] }}">
+        <input type="hidden" name="vote_num" value="{{ answer['vote_number'] }}">
+        <input type="radio" name="vote_up" value="up"> Vote Up Answer<br>
+        <input type="radio" name="vote_down" value="down"> Vote Down Answer<br>
+        <input type="submit" value="VOTE">
+    </form>
     comments:<br>
     {% for comment in answer_comment %}
         {% if comment['answer_id'] == answer['id'] %}
@@ -54,7 +62,7 @@ Image:{{ question[0]['image'] }}<br>
     {% endfor %}
     <form action="/question_page/{{ answer['id'] }}/update">
         <button><a href="{{ url_for('add_comment_to_answer', answer_id = answer['id'], question_id = question[0]['id'] ) }}">Add
-            Comment</a></button>
+            Comment:</a></button>
         <a href="{{ url_for('edit_answer', answer_id=answer['id'], class="button") }}"><button>edit answer</button></a>
     </form>
     <button><a href="{{ url_for('delete_answer', question_id=question[0]['id'], answer_id=answer['id']) }}"> delete answer</a></button>
