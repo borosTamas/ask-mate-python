@@ -86,3 +86,8 @@ textarea{
     border-radius: 5px;
 }
 
+#login{
+    position: absolute;
+    right: 5px;
+}
+
