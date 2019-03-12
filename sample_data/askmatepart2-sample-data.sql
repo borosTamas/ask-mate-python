@@ -143,6 +143,9 @@ INSERT INTO comment VALUES (1, 0, NULL, 'Please clarify the question as it is to
 INSERT INTO comment VALUES (2, NULL, 1, 'I think you could use my_list = list() as well.', '2017-05-02 16:55:00');
 SELECT pg_catalog.setval('comment_id_seq', 2, true);
 
+INSERT INTO "user" VALUES (1, '2017-05-01 05:49:00', 'levente', '$2b$12$R8SYQ7.S9FcrlGMCJsawjuP8AG/KpmMENIz8pSTGx2PN/W/8s2lq2');
+SELECT pg_catalog.setval('user_id_seq', 1, true);
+
 INSERT INTO tag VALUES (1, 'python');
 INSERT INTO tag VALUES (2, 'sql');
 INSERT INTO tag VALUES (3, 'css');

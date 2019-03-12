@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, session, url_for, escape
 import question_data_manager
 import comment_data_manager
 import answer_data_manager
@@ -6,13 +6,39 @@ import util
 import password_hash
 import user_data_manager
 
+
 app = Flask(__name__)
+app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 
 
 @app.route('/')
 def render_index():
+    if 'username' in session:
+        username = session['username']
+    else:
+        username = None
     questions = question_data_manager.collect_latest_5_question()
-    return render_template('index.html', questions=questions)
+    return render_template('index.html', questions=questions, username=username)
+
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        session['username'] = request.form['username']
+        password = request.form['password']
+        hashed_password = password_hash.hash_password(password)
+        verify = password_hash.verify_password(password, hashed_password)
+        print(request.form['username'])
+        print(request.form['password'])
+        return redirect(url_for('render_index'))
+    return redirect(url_for("render_index"))
+
+
+@app.route('/logout')
+def logout():
+    # remove the username from the session if it's there
+    session.pop('username', None)
+    return redirect(url_for('render_index'))
 
 
 @app.route('/all_question')
