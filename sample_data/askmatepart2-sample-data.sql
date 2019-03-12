@@ -25,7 +25,7 @@ CREATE TABLE "user"(
   id serial NOT NULL,
   submission_time timestamp without time zone,
   user_name text,
-  hashed_password text
+  hashed_password text,
 );
 
 
@@ -105,7 +105,7 @@ ALTER TABLE ONLY comment
   ADD CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES "user"(id) on delete cascade;
 
 ALTER TABLE ONLY comment
-<<<<<<< HEAD
+
     ADD CONSTRAINT fk_answer_id FOREIGN KEY (answer_id) REFERENCES answer(id) on delete cascade;
 
 ALTER TABLE ONLY answer
@@ -119,21 +119,6 @@ ALTER TABLE ONLY comment
 
 ALTER TABLE ONLY question_tag
     ADD CONSTRAINT fk_tag_id FOREIGN KEY (tag_id) REFERENCES tag(id) on delete cascade;
-=======
-    ADD CONSTRAINT fk_answer_id FOREIGN KEY (answer_id) REFERENCES answer(id);
-
-ALTER TABLE ONLY answer
-    ADD CONSTRAINT fk_question_id FOREIGN KEY (question_id) REFERENCES question(id);
-
-ALTER TABLE ONLY question_tag
-    ADD CONSTRAINT fk_question_id FOREIGN KEY (question_id) REFERENCES question(id);
-
-ALTER TABLE ONLY comment
-    ADD CONSTRAINT fk_question_id FOREIGN KEY (question_id) REFERENCES question(id);
-
-ALTER TABLE ONLY question_tag
-    ADD CONSTRAINT fk_tag_id FOREIGN KEY (tag_id) REFERENCES tag(id);
->>>>>>> add sql sample data
 
 INSERT INTO question VALUES (0, '2017-04-28 08:29:00', 29, 7, 'How to make lists in Python?', 'I am totally new to this, any hints?', NULL);
 INSERT INTO question VALUES (1, '2017-04-29 09:19:00', 15, 9, 'Wordpress loading multiple jQuery Versions', 'I developed a plugin that uses the jquery booklet plugin (http://builtbywill.com/booklet/#/) this plugin binds a function to $ so I cann call $(".myBook").booklet();

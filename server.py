@@ -116,6 +116,10 @@ def edit_question(question_id):
     result = question_data_manager.find_question(q_id=question_id)
     return render_template('add_question.html', result=result)
 
+@app.route('/all-user')
+def list_all_user():
+    result=user_data_manager.select_all_user()
+    return render_template('all_users.html', users=result)
 
 @app.route('/registration', methods=['GET', 'POST'])
 def registration():
