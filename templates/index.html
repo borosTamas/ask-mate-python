@@ -6,15 +6,8 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
 </head>
 <body>
-<div id="login">
-    <a>{{ username }}</a>
-    <a href="#sigin" class="button">Sig in</a>
-    <a href="#login" class="button" type="submit">Login</a>
-    <input class="user_name" placeholder="username" name="username">
-    <input class="password" placeholder="password" name="password" type="password">
-</div>
-<div id="search">
 <div id="Home_button">{% include 'home_button.html' %}</div>
+<div id="search">
 </div>
 <h1>ASK MATE</h1>
 <a href="/add-question" class="button">Add new Question</a>

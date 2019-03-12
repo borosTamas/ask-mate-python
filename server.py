@@ -16,7 +16,7 @@ def render_index():
     if 'username' in session:
         username = session['username']
     else:
-        username = 'You are not loged in'
+        username = None
     questions = question_data_manager.collect_latest_5_question()
     return render_template('index.html', questions=questions, username=username)
 
@@ -25,14 +25,14 @@ def render_index():
 def login():
     if request.method == 'POST':
         session['username'] = request.form['username']
-        print('username')
+        password = request.form['password']
+        hashed_password = password_hash.hash_password(password)
+        verify = password_hash.verify_password(password, hashed_password)
+        print(request.form['username'])
+        print(request.form['password'])
         return redirect(url_for('render_index'))
-    return '''
-        <form method="post">
-            <p><input type=text name=username>
-            <p><input type=submit value=Login>
-        </form>
-    '''
+    return redirect(url_for("render_index"))
+
 
 @app.route('/logout')
 def logout():
