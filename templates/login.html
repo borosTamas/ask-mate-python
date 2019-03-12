@@ -6,13 +6,15 @@
 </head>
 <body>
 <div id="login">
-    <a>{{ login_message }}</a>
+    <a class="login_message">{{ login_message }}</a>
+    <form class="sigin" action="{{ url_for('registration')}}">
+        <input type="submit" value="Signin">
+    </form>
     <form action="/login" method="POST">
         <input class="user_name" placeholder="username" name="username">
         <input class="password" placeholder="password" name="password" type="password">
         <input type="submit" value="Login">
     </form>
-    <a href="{{ url_for('registration') }}" class="button">Sign in</a>
 </div>
 </body>
 </html>
