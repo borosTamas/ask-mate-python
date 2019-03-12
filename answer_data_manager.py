@@ -62,13 +62,13 @@ def add_answer(cursor, form_data):
 
 
 @connection.connection_handler
-def update_vote_number(cursor, vote, q_id):
+def update_vote_number_answer(cursor, vote, a_id):
     cursor.execute("""
-        UPDATE question
+        UPDATE answer
         set vote_number = %(vote)s
-        WHERE id = %(q_id)s
+        WHERE id = %(a_id)s
     """,
-                   {'vote': vote, 'q_id': q_id})
+        {'vote': vote, 'a_id': a_id})
 
 
 @connection.connection_handler

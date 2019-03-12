@@ -34,8 +34,8 @@ def sort_questions():
     return result
 
 
-@app.route('/question_page/vote', methods=['GET', 'POST'])
-def vote():
+@app.route('/question_page/vote_question',methods=['GET','POST'])
+def vote_question():
     vote = int(request.form.get('vote_num'))
     vote_up = request.form.get('vote_up')
     vote_down = request.form.get('vote_down')
@@ -45,8 +45,23 @@ def vote():
             vote += 1
         elif vote_down == 'down':
             vote -= 1
-        comment_data_manager.update_vote_number(vote=vote, q_id=q_id)
+        question_data_manager.update_vote_number_question(vote=vote, q_id=q_id)
         return redirect('/')
+
+
+@app.route('/question_page/vote_answer',methods=['GET','POST'])
+def vote_answer():
+    vote = int(request.form.get('vote_num'))
+    vote_up = request.form.get('vote_up')
+    vote_down = request.form.get('vote_down')
+    a_id = request.form.get('a_id')
+    if request.method == 'POST':
+        if vote_up == 'up':
+           vote += 1
+        elif vote_down == 'down':
+           vote -= 1
+    answer_data_manager.update_vote_number_answer(vote=vote, a_id=a_id)
+    return redirect('/')
 
 
 @app.route('/question_page/<question_id>/delete')
@@ -87,7 +102,7 @@ def show_question(question_id):
     comment = comment_data_manager.collect_comment_to_question(q_id=question_id)
     answer_comment = []
     for answer in answers:
-        temporary = data_manager.collect_comment_to_answer(a_id=answer['id'])
+        temporary = comment_data_manager.collect_comment_to_answer(a_id=answer['id'])
         if len(temporary) > 0:
             answer_comment.append(temporary)
     if len(answer_comment) <= 0:
