@@ -6,7 +6,11 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
 </head>
 <body>
+{% if verify == True %}
+<div id="logout" class="logout">{% include 'logout.html' %}</div>
+{%  else %}
 <div id="login" class="login">{%  include 'login.html' %}</div>
+{% endif %}
 <div id="Home_button">{% include 'home_button.html' %}</div>
 <div id="search"></div>
 <h1>ASK MATE</h1>
