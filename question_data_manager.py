@@ -19,8 +19,7 @@ def collect_questions(cursor):
     SELECT * FROM question
     """)
     result = cursor.fetchall()
-    return result@connection.connection_handler
-
+    return result
 
 
 @connection.connection_handler
@@ -108,7 +107,7 @@ def update_view_number(cursor, q_id):
 
 
 @connection.connection_handler
-def update_vote_number(cursor, vote, q_id):
+def update_vote_number_question(cursor, vote, q_id):
     cursor.execute("""
         UPDATE question
         set vote_number = %(vote)s
