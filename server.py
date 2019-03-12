@@ -3,6 +3,8 @@ import question_data_manager
 import comment_data_manager
 import answer_data_manager
 import util
+import password_hash
+import user_data_manager
 
 
 app = Flask(__name__)
@@ -45,7 +47,7 @@ def show_all_question():
     return render_template('all_question.html', questions=questions)
 
 
-@app.route('/all_question/sort',methods=['GET', 'POST'])
+@app.route('/all_question/sort', methods=['GET', 'POST'])
 def show_all_sorted_question():
     questions = sort_questions()
     return render_template('all_question.html', questions=questions)
@@ -58,8 +60,8 @@ def sort_questions():
     return result
 
 
-@app.route('/question_page/vote',methods=['GET','POST'])
-def vote():
+@app.route('/question_page/vote_question',methods=['GET','POST'])
+def vote_question():
     vote = int(request.form.get('vote_num'))
     vote_up = request.form.get('vote_up')
     vote_down = request.form.get('vote_down')
@@ -69,8 +71,23 @@ def vote():
             vote += 1
         elif vote_down == 'down':
             vote -= 1
-        comment_data_manager.update_vote_number(vote=vote, q_id=q_id)
+        question_data_manager.update_vote_number_question(vote=vote, q_id=q_id)
         return redirect('/')
+
+
+@app.route('/question_page/vote_answer',methods=['GET','POST'])
+def vote_answer():
+    vote = int(request.form.get('vote_num'))
+    vote_up = request.form.get('vote_up')
+    vote_down = request.form.get('vote_down')
+    a_id = request.form.get('a_id')
+    if request.method == 'POST':
+        if vote_up == 'up':
+           vote += 1
+        elif vote_down == 'down':
+           vote -= 1
+    answer_data_manager.update_vote_number_answer(vote=vote, a_id=a_id)
+    return redirect('/')
 
 
 @app.route('/question_page/<question_id>/delete')
@@ -111,18 +128,35 @@ def show_question(question_id):
     comment = comment_data_manager.collect_comment_to_question(q_id=question_id)
     answer_comment = []
     for answer in answers:
-        temporary = data_manager.collect_comment_to_answer(a_id=answer['id'])
+        temporary = comment_data_manager.collect_comment_to_answer(a_id=answer['id'])
         if len(temporary) > 0:
             answer_comment.append(temporary)
     if len(answer_comment) <= 0:
         answer_comment = [None]
-    return render_template('question_page.html', question=question, answers=answers, comment=comment, answer_comment=answer_comment[0])
+    return render_template('question_page.html', question=question, answers=answers, comment=comment,
+                           answer_comment=answer_comment[0])
 
 
 @app.route('/question_page/<question_id>/edit')
 def edit_question(question_id):
     result = question_data_manager.find_question(q_id=question_id)
     return render_template('add_question.html', result=result)
+
+
+@app.route('/registration', methods=['GET', 'POST'])
+def registration():
+    if request.method == 'POST':
+        username, password = get_registration_data()
+        submission_time = util.submission_time_generator()
+        user_data_manager.insert_new_user(submission_time= submission_time, username=username, h_password=password)
+        return redirect('/')
+    return render_template('registration.html')
+
+
+def get_registration_data():
+    user_name = request.form.get('user_name')
+    password = password_hash.hash_password(request.form.get('password'))
+    return user_name, password
 
 
 @app.route('/rewrite_question', methods=['POST'])
@@ -140,11 +174,11 @@ def rewrite_question():
     return show_question(updated_question['id'])
 
 
-@app.route('/question_page/<question_id>/new-answer', methods=['GET','POST'])
+@app.route('/question_page/<question_id>/new-answer', methods=['GET', 'POST'])
 def post_an_answer(question_id):
     result = []
     message = ""
-    if request.method=='POST':
+    if request.method == 'POST':
         new_answer = create_answer(question_id, request.form['message'], request.form['image'])
         answer_data_manager.add_answer(form_data=new_answer)
         return redirect('/')
@@ -200,11 +234,11 @@ def create_question(message, image, title):
         'message': message,
         'title': title,
         'image': image,
-        'view_number' : 1
+        'view_number': 1
     }
 
 
-@app.route('/question_page/<question_id>/comment', methods=['GET','POST'])
+@app.route('/question_page/<question_id>/comment', methods=['GET', 'POST'])
 def add_comment_to_question(question_id):
     comment = 'question'
     if request.method == 'POST':
@@ -215,7 +249,7 @@ def add_comment_to_question(question_id):
     return render_template('add_comment.html', question_id=question_id, comment=comment)
 
 
-@app.route('/question_page/<question_id>/<answer_id>/comment', methods=['GET','POST'])
+@app.route('/question_page/<question_id>/<answer_id>/comment', methods=['GET', 'POST'])
 def add_comment_to_answer(answer_id, question_id):
     comment = 'answer'
     if request.method == 'POST':
