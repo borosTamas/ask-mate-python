@@ -52,17 +52,7 @@
 <div class="button">
 <a href="{{ url_for('render_index') }}" class="button"> Home</a>
 </div>
-<div id="login">
-    <a>{{ username }}</a>
-    <form action="/login" method="POST">
-        <input class="user_name" placeholder="username" name="username">
-        <input class="password" placeholder="password" name="password" type="password">
-        <input type="submit">
-    </form>
-    <a href="{{ url_for('registration') }}" class="button">Sign in</a>
-</div>
-    <br>
-
+<br><br>
 <form  class="example" action="/search" method='POST'>
     <input type="text" name="question_data" value="" required>
     <button type="submit">Search</button>

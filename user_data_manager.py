@@ -8,3 +8,16 @@ def insert_new_user(cursor, submission_time, username, h_password):
     """,
     {'submission_time':submission_time,'username': username, 'h_password': h_password})
 
+
+@connection.connection_handler
+def get_hashed_password(cursor, user_name):
+    cursor.execute("""
+    SELECT hashed_password
+    FROM "user"
+    WHERE user_name = %(user_name)s
+    """,
+                   {'user_name' : user_name})
+    result = cursor.fetchall()
+    return result
+
+

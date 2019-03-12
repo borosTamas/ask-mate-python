@@ -6,9 +6,9 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
 </head>
 <body>
+<div id="login" class="login">{%  include 'login.html' %}</div>
 <div id="Home_button">{% include 'home_button.html' %}</div>
-<div id="search">
-</div>
+<div id="search"></div>
 <h1>ASK MATE</h1>
 <a href="/add-question" class="button">Add new Question</a>
 <a href="/all_question" class="button">Show All Question</a>

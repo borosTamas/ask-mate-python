@@ -6,10 +6,13 @@
 </head>
 <body>
 <div id="login">
-    <a href="#login" class="button">Login</a>
-    <input class="user_name" placeholder="username" name="username">
-    <input class="password" placeholder="password" name="password">
-    <a href="#sigin" class="button">Sig in</a>
+    <a>{{ login_message }}</a>
+    <form action="/login" method="POST">
+        <input class="user_name" placeholder="username" name="username">
+        <input class="password" placeholder="password" name="password" type="password">
+        <input type="submit" value="Login">
+    </form>
+    <a href="{{ url_for('registration') }}" class="button">Sign in</a>
 </div>
 </body>
 </html>
