@@ -19,7 +19,7 @@ def collect_questions(cursor):
     SELECT * FROM question
     """)
     result = cursor.fetchall()
-    return result@connection.connection_handler
+    return result
 
 
 

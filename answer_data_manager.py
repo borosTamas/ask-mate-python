@@ -69,3 +69,13 @@ def update_vote_number(cursor, vote, q_id):
         WHERE id = %(q_id)s
     """,
                    {'vote': vote, 'q_id': q_id})
+
+
+@connection.connection_handler
+def update_view_number(cursor, q_id):
+    cursor.execute("""
+    update question
+    set view_number = view_number+1
+    where id = %(q_id)s
+    """,
+                   {'q_id': q_id})

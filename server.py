@@ -1,7 +1,8 @@
 from flask import Flask, render_template, request, redirect
 import question_data_manager
-import data_manager
+import comment_data_manager
 import answer_data_manager
+import util
 
 app = Flask(__name__)
 
@@ -42,7 +43,7 @@ def vote():
             vote += 1
         elif vote_down == 'down':
             vote -= 1
-        data_manager.update_vote_number(vote=vote, q_id=q_id)
+        comment_data_manager.update_vote_number(vote=vote, q_id=q_id)
         return redirect('/')
 
 
@@ -59,7 +60,7 @@ def delete_question(question_id):
             vote += 1
         elif vote_down == 'down':
             vote -= 1
-        data_manager.update_vote_number(vote=vote, q_id=q_id)
+        comment_data_manager.update_vote_number(vote=vote, q_id=q_id)
         return redirect('/')
 
 
@@ -79,9 +80,9 @@ def search():
 @app.route('/question_page/<question_id>')
 def show_question(question_id):
     question = question_data_manager.find_question(q_id=question_id)
-    answers = data_manager.collect_answers(q_id=question_id)
-    data_manager.update_view_number(q_id=question_id)
-    comment = data_manager.collect_comment_to_question(q_id=question_id)
+    answers = answer_data_manager.collect_answers(q_id=question_id)
+    comment_data_manager.update_view_number(q_id=question_id)
+    comment = comment_data_manager.collect_comment_to_question(q_id=question_id)
     answer_comment = []
     for answer in answers:
         temporary = data_manager.collect_comment_to_answer(a_id=answer['id'])
@@ -127,7 +128,7 @@ def post_an_answer(question_id):
 
 def create_answer(question_id, message, image):
     return {
-        'submission_time': data_manager.submission_time_generator(),
+        'submission_time': util.submission_time_generator(),
         'vote_number': 1,
         'question_id': question_id,
         'message': message,
@@ -168,7 +169,7 @@ def add_question():
 
 def create_question(message, image, title):
     return {
-        'submission_time': data_manager.submission_time_generator(),
+        'submission_time': util.submission_time_generator(),
         'vote_number': 1,
         'message': message,
         'title': title,
@@ -182,7 +183,7 @@ def add_comment_to_question(question_id):
     comment = 'question'
     if request.method == 'POST':
         message = request.form['message']
-        data_manager.add_comment_to_question(q_id=question_id, comment_message=message)
+        comment_data_manager.add_comment_to_question(q_id=question_id, comment_message=message)
 
         return show_question(question_id)
     return render_template('add_comment.html', question_id=question_id, comment=comment)
@@ -193,7 +194,7 @@ def add_comment_to_answer(answer_id, question_id):
     comment = 'answer'
     if request.method == 'POST':
         message = request.form['message']
-        data_manager.add_comment_to_answer(a_id=answer_id, comment_message=message)
+        comment_data_manager.add_comment_to_answer(a_id=answer_id, comment_message=message)
         return show_question(question_id)
     return render_template('add_comment.html', answer_id=answer_id, question_id=question_id, comment=comment)
 
