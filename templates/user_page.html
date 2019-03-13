@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
 </head>
 <body>
+<div id="logout" class="logout">{% include 'logout.html' %}</div>
 <div id="Home_button">{% include 'home_button.html' %}</div>
 <h1> {{ user_data['user_name'] }}</h1>
 Reputation: {{ user_data['reputation'] }}

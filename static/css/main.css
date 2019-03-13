@@ -56,6 +56,17 @@ body {
 
 }
 
+.defaultbutton{
+    background-color: #040404;
+    border: none;
+    color: rgba(87, 87, 87, 0.71);
+    padding: 10px 24px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 20px;
+    border-radius: 4px;
+}
 
 h1 {
     color: black;
