@@ -59,6 +59,15 @@ Image:{{ question[0]['image'] }}<br>
         <input type="radio" name="vote_down" value="down"> Vote Down Answer<br>
         <input type="submit" value="VOTE">
     </form>
+    {% if answer['accepted'] == True %}
+        <p class="accepted_answer">accepted</p>
+    {% else %}
+        <form action="{{ url_for('accept_answer') }}" method="POST">
+        <input type="hidden" name="q_id" value="{{question[0]['id']}}">
+        <input type="hidden" name="a_id" value="{{ answer['id'] }}">
+        <input type="submit" value="accept answer">
+        </form>
+    {% endif %}
     comments:<br>
     {% for comment in answer_comment %}
         {% if comment['answer_id'] == answer['id'] %}

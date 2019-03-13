@@ -186,6 +186,14 @@ def post_an_answer(question_id):
     return render_template('new_answer.html', question=question, result=result, message=message)
 
 
+@app.route('/accept-answer', methods=['POST', 'GET'])
+def accept_answer():
+    answer_id = request.form['a_id']
+    question_id = request.form['q_id']
+    answer_data_manager.accept_answer(a_id=answer_id)
+    return redirect(url_for('show_question', question_id=question_id))
+
+
 def create_answer(question_id, message, image):
     user_id=user_data_manager.get_user_id(username=session['username'])
     return {
@@ -194,7 +202,8 @@ def create_answer(question_id, message, image):
         'question_id': question_id,
         'message': message,
         'image': image,
-        'user_id': user_id['id']
+        'user_id': user_id['id'],
+        'accepted': False
     }
 
 
