@@ -217,7 +217,10 @@ def accept_answer():
 
 
 def create_answer(question_id, message, image):
-    user_id=user_data_manager.get_user_id(username=session['username'])
+    if 'username' not in session:
+        user_id = {'id':0}
+    else:
+        user_id=user_data_manager.get_user_id(username=session['username'])
     return {
         'submission_time': util.submission_time_generator(),
         'vote_number': 1,
@@ -278,8 +281,11 @@ def create_question(message, image, title):
 def add_comment_to_question(question_id):
     comment = 'question'
     if request.method == 'POST':
-        user_name=session['username']
-        user_id=user_data_manager.get_user_id(username=user_name)
+        if 'username' not in session:
+            user_name = 'Anonymus'
+        else:
+            user_name = session['username']
+        user_id = user_data_manager.get_user_id(username=user_name)
         message = request.form['message']
         time = util.submission_time_generator()
         comment_data_manager.add_comment_to_question(q_id=question_id, comment_message=message, u_id=user_id['id'], s_time=time)
