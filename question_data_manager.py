@@ -84,12 +84,12 @@ def update_question(cursor, datas):
 @connection.connection_handler
 def add_question(cursor, from_data):
     cursor.execute("""
-                    INSERT INTO question(submission_time, view_number, vote_number, title, message, image)
-                    VALUES (%s,%s,%s, %s,%s,%s)""",
+                    INSERT INTO question(submission_time, view_number, vote_number, title, message, image,user_id)
+                    VALUES (%s,%s,%s, %s,%s,%s,%s)""",
                    (
                        from_data['submission_time'], from_data['view_number'], from_data['vote_number'],
                        from_data['title'],
-                       from_data['message'], from_data['image']))
+                       from_data['message'], from_data['image'], from_data['user_id']))
 
 @connection.connection_handler
 def update_view_number(cursor, q_id):

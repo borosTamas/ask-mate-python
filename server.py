@@ -102,14 +102,13 @@ def vote_answer():
 @app.route('/question_page/<question_id>/delete')
 def delete_question(question_id):
     question_data_manager.delete_question(q_id=question_id)
-    return show_all_question()
-
+    return redirect(url_for('show_all_question'))
 
 
 @app.route('/question_page/<question_id>/<answer_id>/answer-delete')
 def delete_answer(question_id, answer_id):
     answer_data_manager.delete_answer(q_id=question_id, a_id=answer_id)
-    return show_question(question_id)
+    return redirect(url_for('show_question',question_id=question_id))
 
 
 @app.route('/search', methods=['POST'])
@@ -131,7 +130,7 @@ def show_question(question_id):
         if len(temporary) > 0:
             answer_comment.append(temporary)
     if len(answer_comment) <= 0:
-        answer_comment = [None]
+        answer_comment = ['']
     return render_template('question_page.html', question=question, answers=answers, comment=comment,
                            answer_comment=answer_comment[0])
 
@@ -147,7 +146,8 @@ def registration():
     if request.method == 'POST':
         username, password = get_registration_data()
         submission_time = util.submission_time_generator()
-        user_data_manager.insert_new_user(submission_time= submission_time, username=username, h_password=password)
+        reputation=0
+        user_data_manager.insert_new_user(submission_time= submission_time, username=username, h_password=password, user_reputation = reputation)
         return redirect('/')
     return render_template('registration.html')
 
@@ -170,7 +170,7 @@ def rewrite_question():
         'image': request.form.get('image')
     }
     question_data_manager.update_question(datas=updated_question)
-    return show_question(updated_question['id'])
+    return redirect(url_for('show_question', question_id=updated_question['id']))
 
 
 @app.route('/question_page/<question_id>/new-answer', methods=['GET', 'POST'])
@@ -186,12 +186,14 @@ def post_an_answer(question_id):
 
 
 def create_answer(question_id, message, image):
+    user_id=user_data_manager.get_user_id(username=session['username'])
     return {
         'submission_time': util.submission_time_generator(),
         'vote_number': 1,
         'question_id': question_id,
         'message': message,
-        'image': image
+        'image': image,
+        'user_id': user_id['id']
     }
 
 
@@ -227,13 +229,16 @@ def add_question():
 
 
 def create_question(message, image, title):
+    user_name = session['username']
+    user_id = user_data_manager.get_user_id(username=user_name)
     return {
         'submission_time': util.submission_time_generator(),
         'vote_number': 1,
         'message': message,
         'title': title,
         'image': image,
-        'view_number': 1
+        'view_number': 1,
+        'user_id': user_id['id']
     }
 
 

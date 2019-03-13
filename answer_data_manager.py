@@ -54,10 +54,10 @@ def collect_all_answer(cursor):
 @connection.connection_handler
 def add_answer(cursor, form_data):
     cursor.execute("""
-                INSERT INTO answer(submission_time, vote_number, question_id, message, image)
-                VALUES (%s, %s, %s, %s, %s)""",
+                INSERT INTO answer(submission_time, vote_number, question_id, message, image,user_id)
+                VALUES (%s, %s, %s, %s, %s,%s)""",
                    (form_data['submission_time'], form_data['vote_number'], form_data['question_id'],
-                    form_data['message'], form_data['image']))
+                    form_data['message'], form_data['image'], form_data['user_id']))
 
 
 
