@@ -13,11 +13,12 @@ app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 
 @app.route('/')
 def render_index():
-    login_message = 'You are not loged in'
     if 'username' in session:
         username = session['username']
+        login_message = 'Logged in as ' + username
     else:
         username = None
+        login_message = 'You are not loged in'
     questions = question_data_manager.collect_latest_5_question()
     return render_template('index.html', questions=questions, username=username, login_message=login_message)
 
@@ -33,7 +34,7 @@ def login():
         hashed_password = h_password[0]['hashed_password']
         verify = password_hash.verify_password(password, hashed_password)
         if verify == True:
-            login_message = 'Loged in as ' + username
+            login_message = 'Logged in as ' + username
             return render_template('index.html', password=password, hashed_password=hashed_password, verify=verify,
                                    login_message=login_message, questions=questions)
         else:

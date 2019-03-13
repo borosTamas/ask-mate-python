@@ -6,7 +6,11 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
 </head>
 <body>
-
+{% if username != None %}
+<div id="logout" class="logout">{% include 'logout.html' %}</div>
+{%  else %}
+<div id="login" class="login">{%  include 'login.html' %}</div>
+{% endif %}
 {% include 'home_button.html' %}
 <h1>ALL QUESTION</h1>
 <form action="/all_question/sort" method="post">
