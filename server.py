@@ -293,6 +293,12 @@ def list_all_user():
     result = user_data_manager.select_all_user()
     return render_template('all_users.html', users=result)
 
+@app.route('/user_page/<user_id>')
+def show_user_page(user_id):
+    questions_by_user=question_data_manager.get_all_quesrion_by_user(u_id=user_id)
+    answers_by_user=answer_data_manager.get_all_answes_form_user(u_id=user_id)
+    comments_by_user=''
+
 
 if __name__ == "__main__":
     app.run(

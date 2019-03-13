@@ -22,7 +22,7 @@ def update_vote_number(cursor, vote, q_id):
 
 
 @connection.connection_handler
-def add_comment_to_question(cursor, q_id, comment_message, u_id,s_time):
+def add_comment_to_question(cursor, q_id, comment_message, u_id, s_time):
     cursor.execute("""
                     insert into comment(question_id, message, user_id, submission_time)
                     values (%(q_id)s,%(comment_message)s,%(u_id)s,%(s_time)s)
@@ -38,7 +38,7 @@ def add_comment_to_answer(cursor, a_id, comment_message):
                     values (%(a_id)s,%(comment_message)s)
 
     """,
-                   {'a_id': a_id,  'comment_message': comment_message})
+                   {'a_id': a_id, 'comment_message': comment_message})
 
 
 @connection.connection_handler
@@ -51,6 +51,7 @@ def collect_comment_to_question(cursor, q_id):
     result = cursor.fetchall()
     return result
 
+
 @connection.connection_handler
 def collect_comment_to_answer(cursor, a_id):
     cursor.execute("""
@@ -62,4 +63,14 @@ def collect_comment_to_answer(cursor, a_id):
     return result
 
 
-
+@connection.connection_handler
+def get_all_comments_from_user(cursor, u_id):
+    cursor.execute("""
+    Select comment.message as comment, question.title as question, answer.message as answer from comment
+    full join answer on comment.answer_id = answer.id
+    full join question on comment.question_id = question.id
+    where comment.user_id = %(u_id)s
+    """,
+                   {'u_id': u_id})
+    result = cursor.fetchall()
+    return result

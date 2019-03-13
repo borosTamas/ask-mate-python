@@ -142,3 +142,14 @@ def get_reputation(cursor,user_id):
                    {'user_id':user_id})
     result = cursor.fetchone()
     return result
+
+
+@connection.connection_handler
+def get_all_quesrion_by_user(cursor,u_id):
+    cursor.execute("""
+    select title from question
+    where user_id = %(u_id)s
+    """,
+                   {'q_id':u_id})
+    result=cursor.fetchall()
+    return result
