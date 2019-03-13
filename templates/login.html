@@ -6,7 +6,7 @@
 </head>
 <body>
 <div id="login">
-    <a class="login_message">{{ login_message }}</a>
+    <a class="login_message">{{ session['login_message'] }}</a>
     <form class="sigin" action="{{ url_for('registration')}}">
         <input type="submit" value="Signin">
     </form>
