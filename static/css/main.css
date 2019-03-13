@@ -38,6 +38,10 @@ body {
     color: black;
     font-max-size: small;
 }
+.accepted_answer{
+    background-color: lawngreen;
+    width: 80px;
+}
 
 .button {
     background-color: #555555;
