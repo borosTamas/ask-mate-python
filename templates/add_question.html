@@ -6,11 +6,12 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
 </head>
 <body>
-{% if username != None %}
+{% if session['verify'] == True %}
 <div id="logout" class="logout">{% include 'logout.html' %}</div>
 {%  else %}
 <div id="login" class="login">{%  include 'login.html' %}</div>
 {% endif %}
+<div id="Home_button">{% include 'home_button.html' %}</div>
 {% if result == [] %}
 <h1>Add New Question</h1>
 <form actions="/add-question" method="post">
