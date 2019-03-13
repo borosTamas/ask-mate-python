@@ -100,4 +100,14 @@ textarea{
     right: 10px;
 }
 
+table, th, td{
+    padding: 15px;
+    text-align: left;
+
+}
+
+th, td{
+    border-bottom: 1px solid #000000;
+}
+
 
