@@ -39,6 +39,7 @@ def get_hashed_password(cursor, user_name):
 def select_all_user(cursor):
     cursor.execute("""
     select * from "user"
+    ORDER BY id
     """)
     result=cursor.fetchall()
     return result

@@ -76,10 +76,16 @@ def vote_question():
     vote_up = request.form.get('vote_up')
     vote_down = request.form.get('vote_down')
     q_id = request.form.get('q_id')
+    id = question_data_manager.get_userid_used_question(q_id)
+    reputation = question_data_manager.get_reputation(id[0]['user_id'])
     if request.method == 'POST':
         if vote_up == 'up':
+            reputation = reputation['reputation'] + 5
+            question_data_manager.update_reputation(id[0]['user_id'], reputation)
             vote += 1
         elif vote_down == 'down':
+            reputation = reputation['reputation'] - 2
+            question_data_manager.update_reputation(id[0]['user_id'], reputation)
             vote -= 1
         question_data_manager.update_vote_number_question(vote=vote, q_id=q_id)
         return redirect('/')
@@ -91,11 +97,17 @@ def vote_answer():
     vote_up = request.form.get('vote_up')
     vote_down = request.form.get('vote_down')
     a_id = request.form.get('a_id')
+    id = answer_data_manager.get_userid_used_answer(a_id)
+    reputation = answer_data_manager.get_reputation(id[0]['user_id'])
     if request.method == 'POST':
         if vote_up == 'up':
-           vote += 1
+            reputation = reputation['reputation'] + 10
+            answer_data_manager.update_reputation(id[0]['user_id'], reputation)
+            vote += 1
         elif vote_down == 'down':
-           vote -= 1
+            reputation = reputation['reputation'] -2
+            answer_data_manager.update_reputation(id[0]['user_id'], reputation)
+            vote -= 1
     answer_data_manager.update_vote_number_answer(vote=vote, a_id=a_id)
     return redirect('/')
 
