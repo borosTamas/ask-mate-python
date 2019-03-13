@@ -20,6 +20,8 @@ def render_index():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     questions = question_data_manager.collect_latest_5_question()
+    login_message = 'You are not logged in'
+    session['login_message'] = login_message
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
@@ -33,16 +35,16 @@ def login():
                 session['username'] = username
                 login_message = 'Logged in as ' + username
                 session['login_message'] = login_message
-                return render_template('index.html', verify=verify, login_message=login_message, questions=questions)
+                return redirect(url_for('render_index', verify=verify, login_message=login_message, questions=questions))
             else:
                 session['verify'] = verify
                 login_message = 'Invalid username or password'
                 session['login_message'] = login_message
-                return render_template('index.html', login_message=login_message, questions=questions)
+                return redirect(url_for('render_index', login_message=login_message, questions=questions))
         else:
             login_message = 'Invalid username or password'
             session['login_message'] = login_message
-            return render_template('index.html', login_message=login_message, questions=questions)
+            return redirect(url_for('render_index', login_message=login_message, questions=questions))
     return redirect(url_for("render_index"))
 
 

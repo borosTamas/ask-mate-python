@@ -39,7 +39,7 @@ body {
     font-max-size: small;
 }
 .accepted_answer{
-    background-color: lawngreen;
+    background-color: #c38005;
     width: 80px;
 }
 
@@ -103,7 +103,6 @@ textarea{
 table, th, td{
     padding: 15px;
     text-align: left;
-
 }
 
 th, td{
