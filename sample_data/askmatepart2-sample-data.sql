@@ -50,7 +50,8 @@ CREATE TABLE answer (
     question_id integer,
     message text,
     image text,
-    user_id integer
+    user_id integer,
+    accepted boolean
 );
 
 DROP TABLE IF EXISTS public.comment;
@@ -106,7 +107,19 @@ ALTER TABLE ONLY comment
   ADD CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES "user"(id) on delete cascade;
 
 ALTER TABLE ONLY comment
+    ADD CONSTRAINT fk_answer_id FOREIGN KEY (answer_id) REFERENCES answer(id) on delete cascade;
 
+ALTER TABLE ONLY answer
+    ADD CONSTRAINT fk_question_id FOREIGN KEY (question_id) REFERENCES question(id) on delete cascade;
+
+ALTER TABLE ONLY question_tag
+    ADD CONSTRAINT fk_question_id FOREIGN KEY (question_id) REFERENCES question(id) on delete cascade;
+
+ALTER TABLE ONLY comment
+    ADD CONSTRAINT fk_question_id FOREIGN KEY (question_id) REFERENCES question(id) on delete cascade;
+
+ALTER TABLE ONLY question_tag
+    ADD CONSTRAINT fk_tag_id FOREIGN KEY (tag_id) REFERENCES tag(id) on delete cascade;
 
 
 INSERT INTO question VALUES (0, '2017-04-28 08:29:00', 29, 7, 'How to make lists in Python?', 'I am totally new to this, any hints?', NULL);
