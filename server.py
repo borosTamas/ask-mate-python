@@ -15,7 +15,12 @@ app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 def render_index():
     login_message = 'You are not logged in'
     questions = question_data_manager.collect_latest_5_question()
-    return render_template('index.html', questions=questions, login_message=login_message)
+    if 'username' in session:
+        user_data = user_data_manager.get_user_id(username=session['username'])
+        user_id=user_data['id']
+    else:
+        user_id=''
+    return render_template('index.html', questions=questions, login_message=login_message, user_id=user_id)
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -297,7 +302,9 @@ def list_all_user():
 def show_user_page(user_id):
     questions_by_user=question_data_manager.get_all_quesrion_by_user(u_id=user_id)
     answers_by_user=answer_data_manager.get_all_answes_form_user(u_id=user_id)
-    comments_by_user=''
+    comments_by_user= comment_data_manager.get_all_comments_from_user(u_id=user_id)
+    user_data = user_data_manager.get_user_data(u_id=user_id)
+    return render_template('user_page.html', questions=questions_by_user, answers=answers_by_user, comments=comments_by_user, user_data=user_data)
 
 
 if __name__ == "__main__":

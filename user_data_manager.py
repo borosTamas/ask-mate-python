@@ -43,8 +43,6 @@ def get_hashed_password(cursor, user_name):
     return result
 
 
-
-
 @connection.connection_handler
 def select_all_user(cursor):
     cursor.execute("""
@@ -54,3 +52,13 @@ def select_all_user(cursor):
     result=cursor.fetchall()
     return result
 
+
+@connection.connection_handler
+def get_user_data(cursor, u_id):
+    cursor.execute("""
+    select id, user_name, submission_time, reputation from "user"
+    where id = %(u_id)s
+    """,
+                   {'u_id': u_id})
+    result= cursor.fetchone()
+    return result

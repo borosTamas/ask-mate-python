@@ -66,7 +66,7 @@ def collect_comment_to_answer(cursor, a_id):
 @connection.connection_handler
 def get_all_comments_from_user(cursor, u_id):
     cursor.execute("""
-    Select comment.message as comment, question.title as question, answer.message as answer from comment
+    Select comment.message as comment, question.title as question, question.id as question_id, answer.question_id as question_id, answer.message as answer from comment
     full join answer on comment.answer_id = answer.id
     full join question on comment.question_id = question.id
     where comment.user_id = %(u_id)s

@@ -125,7 +125,7 @@ def get_reputation(cursor,user_id):
 
 @connection.connection_handler
 def get_all_answes_form_user(cursor, u_id):
-    cursor.execute("""Select question.title as question_title, answer.message as answer from answer
+    cursor.execute("""Select question_id, question.title as question_title, answer.message as answer, answer.vote_number as vote_number from answer
     join question on question_id=question.id
     where answer.user_id= %(u_id)s
     """,
