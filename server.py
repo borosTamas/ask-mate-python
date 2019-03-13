@@ -97,11 +97,12 @@ def vote_question():
             question_data_manager.update_reputation(id[0]['user_id'], reputation)
             vote -= 1
         question_data_manager.update_vote_number_question(vote=vote, q_id=q_id)
-        return redirect('/')
+        return redirect(url_for('show_question', question_id=q_id))
 
 
 @app.route('/question_page/vote_answer',methods=['GET','POST'])
 def vote_answer():
+    q_id= request.form.get('question_id')
     vote = int(request.form.get('vote_num'))
     vote_up = request.form.get('vote_up')
     vote_down = request.form.get('vote_down')
@@ -118,7 +119,7 @@ def vote_answer():
             answer_data_manager.update_reputation(id[0]['user_id'], reputation)
             vote -= 1
     answer_data_manager.update_vote_number_answer(vote=vote, a_id=a_id)
-    return redirect('/')
+    return redirect(url_for('show_question',question_id=q_id))
 
 
 @app.route('/question_page/<question_id>/delete')
@@ -202,7 +203,7 @@ def post_an_answer(question_id):
     if request.method == 'POST':
         new_answer = create_answer(question_id, request.form['message'], request.form['image'])
         answer_data_manager.add_answer(form_data=new_answer)
-        return redirect('/')
+        return redirect(url_for('show_question', question_id=question_id))
     question = question_data_manager.find_question(question_id)
     return render_template('new_answer.html', question=question, result=result, message=message)
 

@@ -54,6 +54,7 @@ Image: <img src="{{ question[0]['image'] }}" alt="" height="100" width="150"><br
     <img src="{{ answer['image'] }}" alt="" height="100" width="150">
     <p>Vote Number: {{ answer['vote_number'] }}</p>
     <form action="/question_page/vote_answer" method="post">
+        <input type="hidden" name="question_id" value="{{ question[0]['id'] }}">
         <input type="hidden" name="a_id" value="{{ answer['id'] }}">
         <input type="hidden" name="vote_num" value="{{ answer['vote_number'] }}">
         <input type="radio" name="vote_up" value="up"> Vote Up Answer<br>
