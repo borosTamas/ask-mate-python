@@ -22,13 +22,13 @@ def update_vote_number(cursor, vote, q_id):
 
 
 @connection.connection_handler
-def add_comment_to_question(cursor, q_id, comment_message):
+def add_comment_to_question(cursor, q_id, comment_message, u_id,s_time):
     cursor.execute("""
-                    insert into comment(question_id, message)
-                    values (%(q_id)s,%(comment_message)s)
+                    insert into comment(question_id, message, user_id, submission_time)
+                    values (%(q_id)s,%(comment_message)s,%(u_id)s,%(s_time)s)
                     
     """,
-                   {'q_id': q_id, 'comment_message': comment_message})
+                   {'q_id': q_id, 'comment_message': comment_message, 'u_id': u_id, 's_time': s_time})
 
 
 @connection.connection_handler
