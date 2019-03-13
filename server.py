@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, session, url_for, escape
 import question_data_manager
 import comment_data_manager
 import answer_data_manager
@@ -6,13 +6,48 @@ import util
 import password_hash
 import user_data_manager
 
+
 app = Flask(__name__)
+app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 
 
 @app.route('/')
 def render_index():
+    login_message = 'You are not loged in'
+    if 'username' in session:
+        username = session['username']
+    else:
+        username = None
     questions = question_data_manager.collect_latest_5_question()
-    return render_template('index.html', questions=questions)
+    return render_template('index.html', questions=questions, username=username, login_message=login_message)
+
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    questions = question_data_manager.collect_latest_5_question()
+    if request.method == 'POST':
+        session['username'] = request.form['username']
+        username = session['username']
+        password = request.form['password']
+        h_password = user_data_manager.get_hashed_password(user_name=username)
+        hashed_password = h_password[0]['hashed_password']
+        verify = password_hash.verify_password(password, hashed_password)
+        if verify == True:
+            login_message = 'Loged in as ' + username
+            return render_template('index.html', password=password, hashed_password=hashed_password, verify=verify,
+                                   login_message=login_message, questions=questions)
+        else:
+            login_message = 'Invalid username or password'
+            return render_template('index.html', password=password, hashed_password=hashed_password, verify=verify,
+                                   login_message=login_message, questions=questions)
+    return redirect(url_for("render_index"))
+
+
+@app.route('/logout')
+def logout():
+    # remove the username from the session if it's there
+    session.pop('username', None)
+    return redirect(url_for('render_index'))
 
 
 @app.route('/all_question')

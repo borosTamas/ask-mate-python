@@ -86,3 +86,14 @@ textarea{
     border-radius: 5px;
 }
 
+.login{
+    position: absolute;
+    right: 10px;
+}
+
+.logout{
+    position: absolute;
+    right: 10px;
+}
+
+

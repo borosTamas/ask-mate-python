@@ -1,4 +1,3 @@
-import datetime
 import connection
 
 
@@ -91,11 +90,6 @@ def add_question(cursor, from_data):
                        from_data['submission_time'], from_data['view_number'], from_data['vote_number'],
                        from_data['title'],
                        from_data['message'], from_data['image']))
-
-
-def submission_time_generator():
-    submission_time = datetime.datetime.now()
-    return submission_time
 
 @connection.connection_handler
 def update_view_number(cursor, q_id):
