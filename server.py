@@ -13,9 +13,8 @@ app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 
 @app.route('/')
 def render_index():
-    login_message = 'You are not logged in'
     questions = question_data_manager.collect_latest_5_question()
-    return render_template('index.html', questions=questions, login_message=login_message)
+    return render_template('index.html', questions=questions)
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -33,13 +32,16 @@ def login():
                 session['verify'] = verify
                 session['username'] = username
                 login_message = 'Logged in as ' + username
+                session['login_message'] = login_message
                 return render_template('index.html', verify=verify, login_message=login_message, questions=questions)
             else:
                 session['verify'] = verify
                 login_message = 'Invalid username or password'
+                session['login_message'] = login_message
                 return render_template('index.html', login_message=login_message, questions=questions)
         else:
             login_message = 'Invalid username or password'
+            session['login_message'] = login_message
             return render_template('index.html', login_message=login_message, questions=questions)
     return redirect(url_for("render_index"))
 
