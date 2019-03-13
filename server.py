@@ -19,7 +19,7 @@ def render_index():
         user_id=user_data['id']
     else:
         user_id=''
-    return render_template('index.html', questions=questions, login_message=login_message, user_id=user_id)
+    return render_template('index.html', questions=questions, user_id=user_id)
 
 
 @app.route('/login', methods=['GET', 'POST'])

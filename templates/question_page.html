@@ -24,7 +24,7 @@ Vote Number: {{ question[0]['vote_number'] }}<br>
 
 <div id="main_data">
 Message: <p>{{ question[0]['message'] }}</p><br>
-Image: <img src="{{ question[0]['image'] }}" height="100" width="150"><br>
+Image: <img src="{{ question[0]['image'] }}" alt="" height="100" width="150"><br>
 </div>
 
 <form action="/question_page/{{ question['id'] }}/edit" method="POST">
@@ -51,7 +51,7 @@ Image: <img src="{{ question[0]['image'] }}" height="100" width="150"><br>
 <h2>Answers:</h2>
 {% for answer in answers %}
     <div id ="answer">{{ answer['message'] }}</div><br>
-    <img src="{{ answer['image'] }}" height="100" width="150">
+    <img src="{{ answer['image'] }}" alt="" height="100" width="150">
     <p>Vote Number: {{ answer['vote_number'] }}</p>
     <form action="/question_page/vote_answer" method="post">
         <input type="hidden" name="a_id" value="{{ answer['id'] }}">
