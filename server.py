@@ -103,17 +103,7 @@ def vote_answer():
 def delete_question(question_id):
     question_data_manager.delete_question(q_id=question_id)
     return show_all_question()
-    vote = int(request.form.get('vote_num'))
-    vote_up = request.form.get('vote_up')
-    vote_down = request.form.get('vote_down')
-    q_id = request.form.get('q_id')
-    if request.method == 'POST':
-        if vote_up == 'up':
-            vote += 1
-        elif vote_down == 'down':
-            vote -= 1
-        comment_data_manager.update_vote_number(vote=vote, q_id=q_id)
-        return redirect('/')
+
 
 
 @app.route('/question_page/<question_id>/<answer_id>/answer-delete')
@@ -151,10 +141,6 @@ def edit_question(question_id):
     result = question_data_manager.find_question(q_id=question_id)
     return render_template('add_question.html', result=result)
 
-@app.route('/all-user')
-def list_all_user():
-    result=user_data_manager.select_all_user()
-    return render_template('all_users.html', users=result)
 
 @app.route('/registration', methods=['GET', 'POST'])
 def registration():
@@ -270,6 +256,12 @@ def add_comment_to_answer(answer_id, question_id):
         comment_data_manager.add_comment_to_answer(a_id=answer_id, comment_message=message)
         return show_question(question_id)
     return render_template('add_comment.html', answer_id=answer_id, question_id=question_id, comment=comment)
+
+
+@app.route('/all-user')
+def list_all_user():
+    result = user_data_manager.select_all_user()
+    return render_template('all_users.html', users=result)
 
 
 if __name__ == "__main__":
