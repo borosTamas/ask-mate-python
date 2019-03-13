@@ -168,6 +168,10 @@ def edit_question(question_id):
 def registration():
     if request.method == 'POST':
         username, password = get_registration_data()
+        check_name = user_data_manager.find_user(username=username)
+        if check_name['user_name'] is not None:
+            return render_template('registration.html',
+                                   message= 'Sorry, This user name is already in use. Please Select another')
         submission_time = util.submission_time_generator()
         reputation=0
         user_data_manager.insert_new_user(submission_time=submission_time, username=username, h_password=password, user_reputation = reputation)

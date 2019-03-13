@@ -7,6 +7,7 @@
 </head>
 <body>
 <h1>registration</h1>
+<p>{{ message }}</p>
 <form action="{{ url_for('registration')}}" method="post">
     <input name="user_name" required minlength="3" maxlength="15" placeholder="User Name" value="">
     <br>
