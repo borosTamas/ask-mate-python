@@ -18,6 +18,8 @@ def find_user(cursor, username):
     where user_name=%(username)s""",
                    {'username' : username})
     result = cursor.fetchone()
+    if result == None:
+        result = {'user_name':None}
     return result
 
 
