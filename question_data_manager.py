@@ -110,3 +110,35 @@ def update_vote_number_question(cursor, vote, q_id):
     """,
                    {'vote': vote, 'q_id': q_id})
 
+
+@connection.connection_handler
+def update_reputation(cursor,user_id,new_reputation):
+    cursor.execute("""
+    UPDATE "user"
+    SET reputation = %(new_reputation)s
+    WHERE id = %(user_id)s
+    """,
+                   {'user_id':user_id, 'new_reputation':new_reputation})
+
+
+@connection.connection_handler
+def get_userid_used_question(cursor,q_id):
+    cursor.execute("""
+    SELECT user_id FROM question
+    WHERE id = %(q_id)s
+    """,
+                   {'q_id':q_id})
+
+    result = cursor.fetchall()
+    return result
+
+
+@connection.connection_handler
+def get_reputation(cursor,user_id):
+    cursor.execute("""
+    SELECT reputation FROM "user"
+    WHERE id = %(user_id)s
+    """,
+                   {'user_id':user_id})
+    result = cursor.fetchone()
+    return result
