@@ -18,7 +18,11 @@
 <a href="{{ url_for('show_user_page', user_id = user_id)}}" class="button">User Page</a>
    {% endif %}
 <a href="{{ url_for('list_all_user')}} " class="button">All User</a>
-<a href="/add-question" class="button">Add new Question</a>
+{% if user_id != '' %}
+    <a href="/add-question" class="button">Add new Question</a>
+{% else %}
+<a class="button" >Add new Question</a>
+{% endif %}
 <a href="/all_question" class="button">Show All Question</a>
 <h2>LATEST 5 QUESTION:</h2>
 <table>
