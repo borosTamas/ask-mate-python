@@ -7,7 +7,7 @@ def insert_new_user(cursor, submission_time, username, h_password, user_reputati
     insert into "user" (submission_time, user_name,hashed_password, reputation)
     values (%(submission_time)s, %(username)s, %(h_password)s, %(user_reputation)s)
     """,
-    {'submission_time':submission_time,'username': username, 'h_password': h_password, 'user_reputation':user_reputation})
+    {'submission_time': submission_time, 'username': username, 'h_password': h_password, 'user_reputation': user_reputation})
 
 
 @connection.connection_handler
@@ -16,7 +16,7 @@ def find_user(cursor, username):
     select user_name
     from "user"
     where user_name=%(username)s""",
-                   {'username' : username})
+                   {'username': username})
     result = cursor.fetchone()
     if result == None:
         result = {'user_name':None}
@@ -42,6 +42,7 @@ def get_hashed_password(cursor, user_name):
     """,
                    {'user_name' : user_name})
     result = cursor.fetchone()
+
     return result
 
 

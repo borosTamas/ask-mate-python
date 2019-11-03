@@ -14,11 +14,11 @@
 <div id="Home_button">{% include 'home_button.html' %}</div>
 <div id="search"></div>
 <h1>ASK MATE</h1>
-{% if user_id != '' %}
+{% if user_id != None %}
 <a href="{{ url_for('show_user_page', user_id = user_id)}}" class="button">User Page</a>
    {% endif %}
 <a href="{{ url_for('list_all_user')}} " class="button">All User</a>
-{% if user_id != '' %}
+{% if user_id != None %}
     <a href="/add-question" class="button">Add new Question</a>
 {% else %}
 <a class="defaultbutton" >Add new Question</a>

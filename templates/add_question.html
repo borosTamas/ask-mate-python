@@ -12,8 +12,8 @@
 <div id="login" class="login">{%  include 'login.html' %}</div>
 {% endif %}
 <div id="Home_button">{% include 'home_button.html' %}</div>
-{% if result == [] %}
-<h1>Add New Question</h1>
+{% is_new = result == [] %}
+<h1>{{ 'Add New' if is_new else 'Edit' }} Question</h1>
 <form actions="/add-question" method="post">
     Question Name: <br>
     <input type="text" name="title"><br>
@@ -33,7 +33,7 @@
 <h1>Edit Question</h1>
 <form action="/rewrite_question" method="post">
     Question Name: <br>
-    <textarea type="text" rows="1" cols="40" name="title" >{{result[0]['title']}}</textarea><br>
+    <textarea type="text" rows="1" cols="45" name="title" >{{result[0]['title']}}</textarea><br>
     Question: <br>
     <textarea type="text" rows="10" cols="40" name="message">{{result[0]['message']}}</textarea><br>
     <br>

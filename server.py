@@ -6,19 +6,20 @@ import util
 import password_hash
 import user_data_manager
 
-
 app = Flask(__name__)
 app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 
 
 @app.route('/')
 def render_index():
+    verify = request.args.get('verify', type=bool)
+
     questions = question_data_manager.collect_latest_5_question()
+    user_id = None
     if 'username' in session:
         user_data = user_data_manager.get_user_id(username=session['username'])
-        user_id=user_data['id']
-    else:
-        user_id=''
+        user_id = user_data['id']
+
     return render_template('index.html', questions=questions, user_id=user_id)
 
 
@@ -33,16 +34,19 @@ def login():
         find_user = user_data_manager.find_user(username=username)
         if find_user != None:
             h_password = user_data_manager.get_hashed_password(user_name=username)
+
             hashed_password = h_password['hashed_password']
             verify = password_hash.verify_password(password, hashed_password)
+
+            session['verify'] = verify
+
             if verify == True:
-                session['verify'] = verify
                 session['username'] = username
                 login_message = 'Logged in as ' + username
                 session['login_message'] = login_message
-                return redirect(url_for('render_index', verify=verify, login_message=login_message, questions=questions))
+                return redirect(
+                    url_for('render_index', verify=verify, login_message=login_message, questions=questions))
             else:
-                session['verify'] = verify
                 login_message = 'Invalid username or password'
                 session['login_message'] = login_message
                 return redirect(url_for('render_index', login_message=login_message, questions=questions))
@@ -79,7 +83,7 @@ def sort_questions():
     return result
 
 
-@app.route('/question_page/vote_question',methods=['GET','POST'])
+@app.route('/question_page/vote_question', methods=['GET', 'POST'])
 def vote_question():
     vote = int(request.form.get('vote_num'))
     vote_up = request.form.get('vote_up')
@@ -100,9 +104,9 @@ def vote_question():
         return redirect(url_for('show_question', question_id=q_id))
 
 
-@app.route('/question_page/vote_answer',methods=['GET','POST'])
+@app.route('/question_page/vote_answer', methods=['GET', 'POST'])
 def vote_answer():
-    q_id= request.form.get('question_id')
+    q_id = request.form.get('question_id')
     vote = int(request.form.get('vote_num'))
     vote_up = request.form.get('vote_up')
     vote_down = request.form.get('vote_down')
@@ -115,11 +119,11 @@ def vote_answer():
             answer_data_manager.update_reputation(id[0]['user_id'], reputation)
             vote += 1
         elif vote_down == 'down':
-            reputation = reputation['reputation'] -2
+            reputation = reputation['reputation'] - 2
             answer_data_manager.update_reputation(id[0]['user_id'], reputation)
             vote -= 1
     answer_data_manager.update_vote_number_answer(vote=vote, a_id=a_id)
-    return redirect(url_for('show_question',question_id=q_id))
+    return redirect(url_for('show_question', question_id=q_id))
 
 
 @app.route('/question_page/<question_id>/delete')
@@ -131,7 +135,7 @@ def delete_question(question_id):
 @app.route('/question_page/<question_id>/<answer_id>/answer-delete')
 def delete_answer(question_id, answer_id):
     answer_data_manager.delete_answer(q_id=question_id, a_id=answer_id)
-    return redirect(url_for('show_question',question_id=question_id))
+    return redirect(url_for('show_question', question_id=question_id))
 
 
 @app.route('/search', methods=['POST'])
@@ -171,10 +175,11 @@ def registration():
         check_name = user_data_manager.find_user(username=username)
         if check_name['user_name'] is not None:
             return render_template('registration.html',
-                                   message= 'Sorry, This user name is already in use. Please Select another')
+                                   message='Sorry, This user name is already in use. Please Select another')
         submission_time = util.submission_time_generator()
-        reputation=0
-        user_data_manager.insert_new_user(submission_time=submission_time, username=username, h_password=password, user_reputation = reputation)
+        reputation = 0
+        user_data_manager.insert_new_user(submission_time=submission_time, username=username, h_password=password,
+                                          user_reputation=reputation)
         return redirect('/')
     return render_template('registration.html')
 
@@ -222,9 +227,9 @@ def accept_answer():
 
 def create_answer(question_id, message, image):
     if 'username' not in session:
-        user_id = {'id':0}
+        user_id = {'id': 0}
     else:
-        user_id=user_data_manager.get_user_id(username=session['username'])
+        user_id = user_data_manager.get_user_id(username=session['username'])
     return {
         'submission_time': util.submission_time_generator(),
         'vote_number': 1,
@@ -283,19 +288,16 @@ def create_question(message, image, title):
 
 @app.route('/question_page/<question_id>/comment', methods=['GET', 'POST'])
 def add_comment_to_question(question_id):
-    comment = 'question'
-    if request.method == 'POST':
-        if 'username' not in session:
-            user_name = 'Anonymus'
-        else:
-            user_name = session['username']
-        user_id = user_data_manager.get_user_id(username=user_name)
-        message = request.form['message']
-        time = util.submission_time_generator()
-        comment_data_manager.add_comment_to_question(q_id=question_id, comment_message=message, u_id=user_id['id'], s_time=time)
+    if request.method == 'GET':
+        return render_template('add_comment.html', question_id=question_id, comment='question')
 
-        return show_question(question_id)
-    return render_template('add_comment.html', question_id=question_id, comment=comment)
+    user_name = 'Anonymus' if 'username' not in session else session['username']
+    user_id = user_data_manager.get_user_id(username=user_name)
+    message = request.form['message']
+
+    comment_data_manager.add_comment_to_question(q_id=question_id, comment_message=message, u_id=user_id['id'])
+
+    return show_question(question_id)
 
 
 @app.route('/question_page/<question_id>/<answer_id>/comment', methods=['GET', 'POST'])
@@ -313,13 +315,15 @@ def list_all_user():
     result = user_data_manager.select_all_user()
     return render_template('all_users.html', users=result)
 
+
 @app.route('/user_page/<user_id>')
 def show_user_page(user_id):
-    questions_by_user=question_data_manager.get_all_quesrion_by_user(u_id=user_id)
-    answers_by_user=answer_data_manager.get_all_answes_form_user(u_id=user_id)
-    comments_by_user= comment_data_manager.get_all_comments_from_user(u_id=user_id)
+    questions_by_user = question_data_manager.get_all_quesrion_by_user(u_id=user_id)
+    answers_by_user = answer_data_manager.get_all_answes_form_user(u_id=user_id)
+    comments_by_user = comment_data_manager.get_all_comments_from_user(u_id=user_id)
     user_data = user_data_manager.get_user_data(u_id=user_id)
-    return render_template('user_page.html', questions=questions_by_user, answers=answers_by_user, comments=comments_by_user, user_data=user_data)
+    return render_template('user_page.html', questions=questions_by_user, answers=answers_by_user,
+                           comments=comments_by_user, user_data=user_data)
 
 
 if __name__ == "__main__":
